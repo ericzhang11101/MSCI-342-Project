@@ -7,7 +7,6 @@ import MyCourses from'./components/pages/MyCourses'
 import PlanCourses from'./components/pages/PlanCourses'
 import CourseNotes from'./components/pages/CourseNotes'
 import GradeCalculator from'./components/pages/GradeCalculator'
-import Layout from'./components/pages/Layout'
 
 
 function App() {
@@ -17,7 +16,7 @@ function App() {
         <ResponsiveAppBar />
         <div className='layout-main'>
           <Routes>
-              <Route element={<Home />} path="/">
+              <Route element={<Home />} path="*" >
 
               </Route>
               <Route element={<Login />} path="/login">
