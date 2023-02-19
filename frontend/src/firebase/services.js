@@ -22,4 +22,5 @@ export const logout = function() {
     })
 }
 
-export const googleProvider = new auth.GoogleAuthProvider()
+export const googleProvider = new auth.GoogleAuthProvider();
+// export const googleProvider = new auth.GoogleAuthProvider()
