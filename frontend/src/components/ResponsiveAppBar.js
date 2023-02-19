@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,11 +12,24 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { UserContext } from '../App';
+import {Link} from 'react-router-dom'
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [
+  {name: 'Home', link: '/'},
+  {name: 'My Courses', link: '/my-courses'},
+  {name: 'Plan Courses', link: '/plan-courses'},
+  {name: 'Course Info', link: '/course-notes'},
+  {name: 'Grade calculator', link: '/grade-calculator'},
+]
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const headerName = "Management Manager"
 
 function ResponsiveAppBar() {
+  const {user} = useContext(UserContext)
+  const [currentUser, setCurrentUser] = useState(user);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -34,6 +47,10 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleHeaderClick = () => {
+    handleCloseNavMenu()
+  }
 
   return (
     <AppBar position="static">
@@ -55,7 +72,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            {headerName}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -88,9 +105,12 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Link to={page.link} style={{ textDecoration: 'none' }}>
+                  <MenuItem key={page.name} onClick={() => {}}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                </Link>
+                
               ))}
             </Menu>
           </Box>
@@ -111,24 +131,26 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            {headerName}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link to={page.link} style={{ textDecoration: 'none' }}> 
+                <Button
+                  key={page.name}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </Link>
+              
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

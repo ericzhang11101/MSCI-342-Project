@@ -1,10 +1,6 @@
 import {auth} from './firebase-config'
 
 export const googleAuth = function(provider) {  
-    
-    console.log('google provider: ')
-    console.log(provider)
-
     return auth().signInWithPopup(provider).then((res) => {
         return res.user
     }).catch((err) =>{
