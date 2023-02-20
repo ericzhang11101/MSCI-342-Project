@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,13 +12,25 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { UserContext } from '../App';
+import {Link} from 'react-router-dom'
+import {logout} from '../firebase/services'
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [
+  {name: 'Home', link: '/'},
+  {name: 'My Courses', link: '/my-courses'},
+  {name: 'Plan Courses', link: '/plan-courses'},
+  {name: 'Course Info', link: '/course-notes'},
+  {name: 'Grade calculator', link: '/grade-calculator'},
+]
+
+const headerName = "Management Manager"
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const {user, setUser} = useContext(UserContext)
+
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,6 +47,13 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = async () => {
+    await logout();
+    setUser(undefined)
+    handleCloseUserMenu()
+  }
+
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -44,7 +63,6 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -55,7 +73,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            {headerName}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -88,9 +106,12 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Link to={page.link} style={{ textDecoration: 'none', textOverflow: 'clip' }} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page.name} onClick={() => {}}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                </Link>
+                
               ))}
             </Menu>
           </Box>
@@ -111,24 +132,30 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            {headerName}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link to={page.link} style={{ textDecoration: 'none'}} onClick={handleCloseNavMenu}
+              > 
+                <Button
+                  key={page.name}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </Link>
+              
             ))}
           </Box>
 
+         {
+          user !== undefined
+          ?
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.name} src={user.photo} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -147,13 +174,22 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key="logout-button" onClick={handleLogout}>
+                  <Typography textAlign="center">logout</Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
+          :
+          <Link to={'/login'} style={{ textDecoration: 'none' }} onClick={handleCloseNavMenu}
+              > 
+                <Button
+                  key='login-button'
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Login
+                </Button>
+              </Link>
+         }
         </Toolbar>
       </Container>
     </AppBar>
