@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { UserContext } from '../App';
 import {Link} from 'react-router-dom'
+import {logout} from '../firebase/services'
 
 const pages = [
   {name: 'Home', link: '/'},
@@ -23,15 +24,13 @@ const pages = [
   {name: 'Grade calculator', link: '/grade-calculator'},
 ]
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const headerName = "Management Manager"
 
 function ResponsiveAppBar() {
-  const {user} = useContext(UserContext)
-  const [currentUser, setCurrentUser] = useState(user);
+  const {user, setUser} = useContext(UserContext)
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -48,9 +47,12 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  const handleHeaderClick = () => {
-    handleCloseNavMenu()
+  const handleLogout = async () => {
+    await logout();
+    setUser(undefined)
+    handleCloseUserMenu()
   }
+
 
   return (
     <AppBar position="static">
@@ -61,7 +63,6 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -105,7 +106,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <Link to={page.link} style={{ textDecoration: 'none' }}>
+                <Link to={page.link} style={{ textDecoration: 'none', textOverflow: 'clip' }} onClick={handleCloseNavMenu}>
                   <MenuItem key={page.name} onClick={() => {}}>
                     <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
@@ -135,7 +136,8 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link to={page.link} style={{ textDecoration: 'none' }}> 
+              <Link to={page.link} style={{ textDecoration: 'none'}} onClick={handleCloseNavMenu}
+              > 
                 <Button
                   key={page.name}
                   sx={{ my: 2, color: 'white', display: 'block' }}
@@ -147,10 +149,13 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
+         {
+          user !== undefined
+          ?
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.name} src={user.photo} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -169,13 +174,22 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key="logout-button" onClick={handleLogout}>
+                  <Typography textAlign="center">logout</Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
+          :
+          <Link to={'/login'} style={{ textDecoration: 'none' }} onClick={handleCloseNavMenu}
+              > 
+                <Button
+                  key='login-button'
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Login
+                </Button>
+              </Link>
+         }
         </Toolbar>
       </Container>
     </AppBar>

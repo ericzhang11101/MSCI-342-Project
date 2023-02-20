@@ -1,13 +1,17 @@
 import React, {useContext, useState} from 'react'
 import {googleAuth, googleProvider} from '../../firebase/services'
 import { UserContext } from '../../App'
+import { Button, Alert } from '@mui/material'
+import {useNavigate} from 'react-router-dom'
 
 export default function Login() {
-  const {user, setUser} = useContext(UserContext)
+  const {setUser} = useContext(UserContext)
+  const navigate = useNavigate()
   const [showFailedLogin, setShowFailedLogin] = useState(false)
 
   async function handleSignIn(e){
-      e.preventDefault()
+      // e.preventDefault()
+      setShowFailedLogin(false)
 
       let login = await googleAuth(googleProvider)
 
@@ -15,28 +19,35 @@ export default function Login() {
         console.log('logged in')
         console.log(login)
 
-        const user = {
+        const newUser = {
           email: login.email,
           name: login.displayName,
           photo: login.photoURL
         }
 
-        setUser(user, () => {
-          // redirect
-        })
+        setUser(newUser)
+        navigate('/home')
       }
       else {
         console.log('failed')
-        // handle on page
+        setShowFailedLogin(true)
+        setTimeout(() => {
+          setShowFailedLogin(false)
+        }, 5000)
       }
   }
 
   return (
     <div>
-      Login
-      <button onClick={handleSignIn}>
-        click me
-      </button>
+      <h2>Login with Google</h2>
+      <Button variant="contained" onClick={handleSignIn}>Login</Button>
+      {
+        showFailedLogin
+        &&
+        <div style={{marginTop: "2rem"}}>
+          <Alert severity="error">Failed to login, please try again :((</Alert>
+        </div>
+      }
     </div>
   )
 }

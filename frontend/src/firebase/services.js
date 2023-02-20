@@ -9,7 +9,7 @@ export const googleAuth = function(provider) {
 
 }
 
-export const logout = function() {
+export const logout = async function() {
         auth().signOut().then(() =>{
         console.log('signed out user')
         return true;
