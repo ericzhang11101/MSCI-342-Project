@@ -21,7 +21,6 @@ const pages = [
   {name: 'My Courses', link: '/my-courses'},
   {name: 'Plan Courses', link: '/plan-courses'},
   {name: 'Course Info', link: '/course-notes'},
-  {name: 'Grade calculator', link: '/grade-calculator'},
 ]
 
 const headerName = "Management Manager"

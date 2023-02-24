@@ -61,7 +61,6 @@ export default function MyCourses() {
 
   return (
     <Stack
-      // divider={<Divider orientation="horizontal" flexItem />}
       spacing={2}
       width={"100%"}
       textAlign="left"
