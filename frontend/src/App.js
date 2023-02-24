@@ -8,6 +8,7 @@ import MyCourses from'./components/pages/MyCourses'
 import PlanCourses from'./components/pages/PlanCourses'
 import CourseNotes from'./components/pages/CourseNotes'
 import GradeCalculator from'./components/pages/GradeCalculator'
+import CourseInfo from './components/pages/CourseInfo';
 
 export const UserContext = createContext(undefined)
 
@@ -28,6 +29,9 @@ function App() {
 
                 </Route>
                 <Route element={<MyCourses />} path="/my-courses">
+
+                </Route>
+                <Route element={<CourseInfo />} path={`/courses/:course`}>
 
                 </Route>
                 <Route element={<PlanCourses />} path="/plan-courses">
