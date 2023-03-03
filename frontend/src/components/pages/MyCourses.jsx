@@ -103,23 +103,23 @@ export default function MyCourses() {
             alignContent="center"
           >
             <Stack
-            direction={"row"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <Typography sx={{ fontSize: 16 }}>
-              Term: {currCourses.term}
-            </Typography>
-            <Button
-              variant='contained'
-              sx={{ fontSize: 16 }}
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
             >
               <Typography sx={{ fontSize: 16 }}>
-                Add Course            
+                Term: {currCourses.term}
               </Typography>
-                
-            </Button>
-          </Stack>
+              <Button
+                variant='contained'
+                sx={{ fontSize: 16 }}
+              >
+                <Typography sx={{ fontSize: 16 }}>
+                  Add Course            
+                </Typography>
+                  
+              </Button>
+            </Stack>
 
             {
               currentCourses.courses.map((course) => {
