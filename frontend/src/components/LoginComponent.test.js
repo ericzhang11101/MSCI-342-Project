@@ -10,7 +10,7 @@ describe('Login tests', () => {
 
     test('renders login button', () => {
       render(<LoginComponent />);
-      const loginButton = screen.getByTestId('loginButton')
+      screen.getByTestId('loginButton')
     })
 
 
