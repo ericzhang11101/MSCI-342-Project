@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react'
 import {googleAuth, googleProvider} from '../../firebase/services'
 import { UserContext } from '../../App'
-import { Button, Alert } from '@mui/material'
 import {useNavigate} from 'react-router-dom'
+import LoginComponent from '../LoginComponent'
 
 export default function Login() {
   const {setUser} = useContext(UserContext)
@@ -20,9 +20,9 @@ export default function Login() {
         console.log(login)
 
         const newUser = {
-          email: login.email,
+          email: login.il,
           name: login.displayName,
-          photo: login.photoURL
+          photo: login.photoemaURL
         }
 
         setUser(newUser)
@@ -40,14 +40,8 @@ export default function Login() {
   return (
     <div>
       <h2>Login with Google</h2>
-      <Button variant="contained" onClick={handleSignIn}>Login</Button>
-      {
-        showFailedLogin
-        &&
-        <div style={{marginTop: "2rem"}}>
-          <Alert severity="error">Failed to login, please try again :((</Alert>
-        </div>
-      }
+      <LoginComponent handleSignIn={handleSignIn} showFailedLogin={showFailedLogin}/>
+    
     </div>
   )
 }

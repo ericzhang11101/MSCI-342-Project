@@ -34,7 +34,7 @@ const StyledButton = styled(Button)`
 export default function Home() {
   return (
     <HomeContainer>
-      <h2>I managed ur mom last night</h2>
+      <h2>Welcome</h2>
       <HomeCol>
         <StyledButton variant="contained">
           <StyledLink>
