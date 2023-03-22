@@ -1,3 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
+
+
 export function convertCourseToNodes(courses) {
     let id = 0;
     let nodes = []
@@ -30,7 +33,6 @@ export function convertCourseToNodes(courses) {
 
 export function generateConnections(nodes){
     const map = {}
-    let id = 0
 
     const prereqNodes = []
 
@@ -60,16 +62,50 @@ export function generateConnections(nodes){
         }
 
         edges.push({
-            id: `edge-${id}`,
+            id: `edge-${uuidv4()}`,
             target: node.id,
             source: sourceNode,
             sourceHandle: "b",
             targetHandle: undefined
         })    
-        id ++
     }
 
     return edges
+}
+
+export function generateConnection(newNode, nodes, selectedCourse){
+    const map = {}
+
+    // add to hm 
+    for (let node of nodes){
+        map[node.name] = node
+    }
+
+    const newEdges = []
+
+    console.log('new node')
+    console.log(newNode)
+    console.log(selectedCourse)
+    
+    for (let prereq of selectedCourse.prereq){
+        console.log('prereq')
+        console.log(prereq)
+        // find prereq
+
+        if (map[prereq]){
+        newEdges.push({
+                // id: `edge-${uuidv4()}`,
+                target: newNode.id,
+                source: map[prereq].id,
+                sourceHandle: "b",
+                targetHandle: undefined
+            })    
+        }
+    }
+
+    console.log('new edges')
+    console.log(newEdges)
+    return newEdges
 }
 
 export function checkValidCourse(courseToCheck, courseList, term){

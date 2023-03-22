@@ -9,7 +9,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import { v4 as uuidv4 } from 'uuid';
 
-import { checkValidCourse, convertCourseToNodes, generateConnections } from './courseUtils';
+import { checkValidCourse, convertCourseToNodes, generateConnections, generateConnection } from './courseUtils';
 import CourseNode from './CourseNode'
 import Sidebar from './Sidebar';
 import './index.css';
@@ -17,8 +17,6 @@ import './index.css';
 const nodeTypes = {
   selectorNode: CourseNode,
 };
-
-const getId = () => uuidv4();
 
 const courses = [
   {
@@ -93,14 +91,18 @@ const PlanCourses = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   useEffect(() => {
+    console.log('edges')
     console.log(edges)
   }, [edges])
 
   useEffect(() => {
+    console.log('nodes')
     console.log(nodes)
   }, [nodes])
 
   const onConnect = useCallback((params) => {
+    console.log('adding edge')
+    console.log(params)
     setEdges((eds) => addEdge(params, eds))
   }, []);
 
@@ -131,7 +133,7 @@ const PlanCourses = () => {
       });
 
       const newNode = {
-        id: getId(),
+        id: uuidv4(),
         type,
         position,
         sourcePosition: 'right',
@@ -149,31 +151,43 @@ const PlanCourses = () => {
       const type = 'selectorNode'
     
       console.log(selectedCourse)
-      // TODO: check dependencies, add connections 
+      // TODO:  add connections 
       const validity = checkValidCourse(selectedCourse, nodes, term)
       console.log('validity: ')
       console.log(validity)
 
-      // TODO: lock position to term 
-      const position = reactFlowInstance.project({
-        x: 20,
-        y: 20,
-      });
+      if (!validity.valid){
+        // TODO: popup error 
+      } else {
+        // TODO: lock position to term 
+        const position = reactFlowInstance.project({
+          x: 20,
+          y: 20,
+        });
 
-      const newNode = {
-        id: getId(),
-        type,
-        position,
-        sourcePosition: 'right',
-        targetPosition: 'left',
-        data: { 
-          term,
-          description: selectedCourse.description,
-          name: selectedCourse.name
-        },
-      };
+        const newNode = {
+          id: uuidv4(),
+          type,
+          position,
+          sourcePosition: 'right',
+          targetPosition: 'left',
+          data: { 
+            term,
+            description: selectedCourse.description,
+            name: selectedCourse.name
+          },
+        };
 
-      setNodes((nds) => nds.concat(newNode));
+        const newEdges = generateConnection(newNode, nodes, selectedCourse)
+        for (let newEdge of newEdges){
+          setEdges((nds) => nds.concat(newEdge));
+        }
+
+        setNodes((nds) => nds.concat(newNode));
+
+      }
+
+
     },
     [reactFlowInstance]
   )
