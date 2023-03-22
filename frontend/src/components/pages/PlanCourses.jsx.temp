@@ -1,0 +1,198 @@
+import React from 'react'
+import styled from 'styled-components'
+import { Stack } from '@mui/system'
+import { CardContent, Typography, Collapse, IconButton, Button} from '@mui/material'
+import { ResponsiveSankey } from '@nivo/sankey'
+
+const CourseContainer = styled.div`
+  width: 600px;
+  height: 600px;
+  background-color: white;
+`
+
+export default function PlanCourses() {
+  // const data = {
+  //   "nodes": [
+  //     {
+  //       "id": "John",
+  //       "nodeColor": "hsl(212, 70%, 50%)"
+  //     },
+  //     {
+  //       "id": "Raoul",
+  //       "nodeColor": "hsl(87, 70%, 50%)"
+  //     },
+  //     {
+  //       "id": "Jane",
+  //       "nodeColor": "hsl(286, 70%, 50%)"
+  //     },
+  //     {
+  //       "id": "Marcel",
+  //       "nodeColor": "hsl(284, 70%, 50%)"
+  //     },
+  //     {
+  //       "id": "Ibrahim",
+  //       "nodeColor": "hsl(32, 70%, 50%)"
+  //     },
+  //     {
+  //       "id": "Junko",
+  //       "nodeColor": "hsl(74, 70%, 50%)"
+  //     },
+  //     {
+  //       "id": "Test",
+  //       "nodeColor": "hsl(74, 70%, 50%)"
+  //     }
+  //   ],
+  //   "links": [
+  //     {
+  //       "source": "Raoul",
+  //       "target": "Ibrahim",
+  //       "value": 23
+  //     },
+  //     {
+  //       "source": "Raoul",
+  //       "target": "Marcel",
+  //       "value": 109
+  //     },
+  //     {
+  //       "source": "Raoul",
+  //       "target": "Junko",
+  //       "value": 55
+  //     },
+  //     {
+  //       "source": "Ibrahim",
+  //       "target": "John",
+  //       "value": 25
+  //     },
+  //     {
+  //       "source": "Ibrahim",
+  //       "target": "Marcel",
+  //       "value": 45
+  //     },
+  //     {
+  //       "source": "Ibrahim",
+  //       "target": "Junko",
+  //       "value": 68
+  //     },
+  //     {
+  //       "source": "John",
+  //       "target": "Junko",
+  //       "value": 32
+  //     },
+  //     {
+  //       "source": "Marcel",
+  //       "target": "John",
+  //       "value": 192
+  //     },
+  //     {
+  //       "source": "Marcel",
+  //       "target": "Jane",
+  //       "value": 104
+  //     },
+  //     {
+  //       "source": "Junko",
+  //       "target": "Jane",
+  //       "value": 173
+  //     }
+  //   ]
+  // }
+
+  const data = {
+    "nodes": [
+      {
+        "id": "1A",
+        "nodeColor": "hsl(212, 70%, 50%)"
+      },
+      {
+        "id": "1B",
+        "nodeColor": "hsl(87, 70%, 50%)"
+      },
+      {
+        "id": "2A",
+        "nodeColor": "hsl(286, 70%, 50%)"
+      },
+      {
+        "id": "2B",
+        "nodeColor": "hsl(284, 70%, 50%)"
+      },
+      {
+        "id": "3A",
+        "nodeColor": "hsl(32, 70%, 50%)"
+      },
+      {
+        "id": "3B",
+        "nodeColor": "hsl(74, 70%, 50%)"
+      },
+      {
+        "id": "MSCI 100",
+        "nodeColor": "red"
+      },
+      {
+        "id": "MSCI 101",
+        nodeColor: "blue"
+      }
+    ],
+    "links": [
+      {
+        "source": "1A",
+        "target": "1B",
+        "value": 0
+      },
+      {
+        "source": "1B",
+        "target": "2A",
+        "value": 0
+      },
+      {
+        "source": "2A",
+        "target": "2B",
+        "value": 0
+      },
+      {
+        "source": "2B",
+        "target": "3A",
+        "value": 0
+      },
+      {
+        "source": "3A",
+        "target": "3B",
+        "value": 0
+      },
+      {
+        "source": "MSCI 100",
+        "target": "1B",
+        value: 0
+      },
+      {
+        source: "MSCI 100",
+        target: "MSCI 101",
+        value: 1
+      }
+
+    ]
+  }
+
+
+  return (
+    <Stack
+      spacing={2}
+      width={"100%"}
+      textAlign="left"
+      margin={"1rem 5rem"}
+      alignItems="center"
+    >
+      <Typography
+        align="center"
+        variant="h2"
+        gutterBottom={true}
+      >
+        My Courses
+      </Typography>
+      <CourseContainer>
+        <ResponsiveSankey
+          data={data}
+          margin={{ top: 50 }}
+        />
+      </CourseContainer>
+    </Stack>
+  )
+}

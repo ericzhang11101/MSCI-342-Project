@@ -5,7 +5,7 @@ import ResponsiveAppBar from './components/ResponsiveAppBar'
 import Home from './components/pages/Home'
 import Login from './components/pages/Login'
 import MyCourses from'./components/pages/MyCourses'
-import PlanCourses from'./components/pages/PlanCourses'
+import PlanCourses from'./components/pages/planCourses/PlanCourses'
 import CourseNotes from'./components/pages/CourseNotes'
 import GradeCalculator from'./components/pages/GradeCalculator'
 import CourseInfo from './components/pages/CourseInfo';
