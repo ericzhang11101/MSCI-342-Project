@@ -111,6 +111,7 @@ export function generateConnection(newNode, nodes, selectedCourse){
 export function checkValidCourse(courseToCheck, courseList, term){
     console.log('courseList')
     console.log(courseList)
+
     // check antireqs 
     const courseMap = {}
 
@@ -127,8 +128,16 @@ export function checkValidCourse(courseToCheck, courseList, term){
         }
     }
     console.log('antireq pass')
+    console.log(courseMap)
 
     // check if prereq exists + is taken before 
+
+    if (courseMap[courseToCheck.name]){
+        return {
+            valid: false,
+            message: `${courseToCheck.name} has been taken already`
+        }
+    }
 
     let prereqMet = false
     let prereqBefore = false

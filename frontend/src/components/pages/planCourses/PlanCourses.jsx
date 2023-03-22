@@ -50,6 +50,7 @@ const courseList = [
   {
     name: "MSCI 201",
     term: '2A',
+    description: "Intro to my 201",
     prereq: ['MSCI 101'],
     antireq: []
   }
@@ -146,12 +147,13 @@ const PlanCourses = () => {
     [reactFlowInstance]
   );
 
-  const createClassNode = useCallback(
-    (selectedCourse, term) => {
+  const createClassNode = (selectedCourse, term) => {
       const type = 'selectorNode'
     
-      console.log(selectedCourse)
+      // console.log(selectedCourse)
       // TODO:  add connections 
+      console.log('checking nodes')
+      console.log(nodes)
       const validity = checkValidCourse(selectedCourse, nodes, term)
       console.log('validity: ')
       console.log(validity)
@@ -171,6 +173,7 @@ const PlanCourses = () => {
           position,
           sourcePosition: 'right',
           targetPosition: 'left',
+          name: selectedCourse.name,
           data: { 
             term,
             description: selectedCourse.description,
@@ -186,11 +189,7 @@ const PlanCourses = () => {
         setNodes((nds) => nds.concat(newNode));
 
       }
-
-
-    },
-    [reactFlowInstance]
-  )
+  }
 
   return (
     <div className="dndflow">
