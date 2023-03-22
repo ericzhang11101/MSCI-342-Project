@@ -27,7 +27,7 @@ const termList = [
 
 const Sidebar = (props) => {
   const courseList = props.courseList
-  
+
   const [selectedCourse, setSelectedCourse] = useState('')
   const [selectedTerm, setSelectedTerm ] = useState('')
 
@@ -71,27 +71,6 @@ const Sidebar = (props) => {
       <Stack
           spacing={2}
       >
-        <div 
-          className="dndnode input" 
-          onDragStart={(event) => onDragStart(event, 'input')} 
-          draggable
-        >
-          Input Node
-        </div>
-        <div 
-          className="dndnode" 
-          onDragStart={(event) => onDragStart(event, 'default')} 
-          draggable
-        >
-          Default Node
-        </div>
-        <div 
-          className="dndnode output" 
-          onDragStart={(event) => onDragStart(event, 'output')} 
-          draggable
-        >
-          Output Node
-        </div>
         <FormControl fullWidth>
           <InputLabel id="select-label">Course</InputLabel>
           <Select
@@ -132,7 +111,7 @@ const Sidebar = (props) => {
         <Button variant="contained" onClick={() => createClassNode()}>
           Add Course
         </Button>
-        <Button variant="outlined" onClick={() => createClassNode()}>
+        <Button variant="outlined" onClick={() => saveCourses()}>
           Save
         </Button>
         {
