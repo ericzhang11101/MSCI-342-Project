@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
-import { Select, MenuItem, InputLabel, FormControl, Stack, Button } from '@mui/material'
+import { Select, MenuItem, InputLabel, FormControl, Stack, Button, Alert } from '@mui/material'
 
-const courseList = [
-  {
-    name: "ECE 467",
-    description: "Intro to my grandma"
-  },
-  {
-    name: "ME 250",
-    description: "Intro to my feet"
-  },
-  {
-    name: "MSCI 201",
-    term: '2A',
-    prereq: ['MSCI 101'],
-    antireq: []
-  },
-]
+// const courseList = [
+//   {
+//     name: "ECE 467",
+//     description: "Intro to my grandma"
+//   },
+//   {
+//     name: "ME 250",
+//     description: "Intro to my feet"
+//   },
+//   {
+//     name: "MSCI 201",
+//     term: '2A',
+//     prereq: ['MSCI 101'],
+//     antireq: []
+//   },
+// ]
 
 const termList = [
   '1A',
@@ -26,6 +26,8 @@ const termList = [
 ]
 
 const Sidebar = (props) => {
+  const courseList = props.courseList
+  
   const [selectedCourse, setSelectedCourse] = useState('')
   const [selectedTerm, setSelectedTerm ] = useState('')
 
@@ -99,7 +101,7 @@ const Sidebar = (props) => {
             label="Course"
             onChange={updateCourse}
           >
-            {
+            {          
               courseList.map((course) => {
                 return (
                   <MenuItem value={course}>{course.name}</MenuItem>
@@ -133,6 +135,13 @@ const Sidebar = (props) => {
         <Button variant="outlined" onClick={() => createClassNode()}>
           Save
         </Button>
+        {
+          props.errorMessage
+          &&
+          <Alert variant="outlined" severity="error">
+              {props.errorMessage}
+          </Alert>
+        }
       </Stack>
   </aside>
   );

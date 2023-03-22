@@ -49,7 +49,6 @@ const courseList = [
   },
   {
     name: "MSCI 201",
-    term: '2A',
     description: "Intro to my 201",
     prereq: ['MSCI 101'],
     antireq: []
@@ -81,6 +80,7 @@ const courseList = [
 
 const initialNodes = convertCourseToNodes(courses)
 const initialEdges = generateConnections(initialNodes)
+
 console.log('edges')
 console.log(initialEdges)
 
@@ -90,6 +90,12 @@ const PlanCourses = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    // load existing nodes/ edges 
+
+  }, [])
 
   useEffect(() => {
     console.log('edges')
@@ -100,6 +106,13 @@ const PlanCourses = () => {
     console.log('nodes')
     console.log(nodes)
   }, [nodes])
+
+  const handleErrorMessage = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage('')
+    }, 2000)
+  }
 
   const onConnect = useCallback((params) => {
     console.log('adding edge')
@@ -150,7 +163,8 @@ const PlanCourses = () => {
   const createClassNode = (selectedCourse, term) => {
       const type = 'selectorNode'
     
-      // console.log(selectedCourse)
+      console.log('selectedCourse')
+      console.log(selectedCourse)
       // TODO:  add connections 
       console.log('checking nodes')
       console.log(nodes)
@@ -159,7 +173,8 @@ const PlanCourses = () => {
       console.log(validity)
 
       if (!validity.valid){
-        // TODO: popup error 
+        // TODO: popup error
+        handleErrorMessage(validity.message) 
       } else {
         // TODO: lock position to term 
         const position = reactFlowInstance.project({
@@ -213,6 +228,8 @@ const PlanCourses = () => {
         <Sidebar 
           createClassNode={createClassNode}
           courseList={courseList}
+          errorMessage={errorMessage}
+          handleErrorMessage={handleErrorMessage}
         />
       </ReactFlowProvider>
     </div>

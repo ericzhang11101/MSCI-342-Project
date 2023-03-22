@@ -117,7 +117,10 @@ export function checkValidCourse(courseToCheck, courseList, term){
 
     for (let course of courseList){
         courseMap[course.name] = course
-    }
+    } 
+
+    console.log('courseToCheck')
+    console.log(courseToCheck)
 
     for (let antireq of courseToCheck.antireq){
         if (courseMap[antireq]){
@@ -139,8 +142,8 @@ export function checkValidCourse(courseToCheck, courseList, term){
         }
     }
 
-    let prereqMet = false
-    let prereqBefore = false
+    let prereqMet = courseToCheck.prereq.length === 0 
+    let prereqBefore = courseToCheck.prereq.length === 0 
     let prereq 
     
     for (let course of courseToCheck.prereq){
