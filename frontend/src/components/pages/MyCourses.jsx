@@ -11,7 +11,7 @@ const currCourses = {
     {
       courseCode: 342,
       programCode: "MSCI",
-      name: "Introduction to bofa my nuts"
+      name: "Introduction to bofa"
     },
     {
       courseCode: 334,
