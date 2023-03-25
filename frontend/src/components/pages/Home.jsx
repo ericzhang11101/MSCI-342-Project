@@ -41,6 +41,21 @@ export default function Home() {
           <p className={'mt-5 text-start w-75 h6'}>
             Management Engineering is a program that provides undergraduate students with an interdisciplinary engineering education that covers a wide range of information from social sciences, decision making and optimizing operations. Students can use this knowledge to design, implement and manage complex real-world questions upon which organizations depend.
           </p>
+
+          <h3 className={'mt-5 text-start'}>
+            WHAT IS THIS APPLICATION?
+          </h3>
+
+          <Divider></Divider>
+          <p className={'mt-5 text-start w-75 h6'}>
+          This application is a tool that helps undergraduate students manage their courses, 
+          analyze notes and share with their cohorts and program. Also designed for anyone who 
+          is interested in management engineering which allows them to view the courses they 
+          potentially will be taking in the future and plan their future courses and career path. 
+          You can log into your account, upload any course notes/ grades and plan your future courses. 
+          Or access any public information from the tabs at the top of this page. 
+          </p>
+
         </Grid>
 
       </Grid>
