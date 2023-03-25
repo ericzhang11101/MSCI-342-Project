@@ -206,6 +206,20 @@ const PlanCourses = () => {
       }
   }
 
+  const saveCourses = async () => {
+    const url = 'http://localhost:5000/'
+    await fetch(url + 'api/getCourses', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+
+      })
+    })
+  }
+
   return (
     <div className="dndflow">
       <ReactFlowProvider>
@@ -230,6 +244,7 @@ const PlanCourses = () => {
           courseList={courseList}
           errorMessage={errorMessage}
           handleErrorMessage={handleErrorMessage}
+          saveCourses={saveCourses}
         />
       </ReactFlowProvider>
     </div>
