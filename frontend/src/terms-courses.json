@@ -1,0 +1,182 @@
+[
+    {
+      "term": "1A",
+      "courses": [
+        {
+          "code": "CHE 102",
+          "name": "Chemistry for Engineers"
+        },
+        {
+          "code": "MSCI 100",
+          "name": "Management Engineering Concepts"
+        },
+        {
+          "code": "MATH 115",
+          "name": "Linear Algebra for Engineering"
+        },
+        {
+          "code": "MATH 116",
+          "name": "Calculus 1 for Engineering"
+        },
+        {
+          "code": "PHYS 115",
+          "name": "Mechanics"
+        }
+      ]
+    },
+    {
+      "term": "1B",
+      "courses": [
+        {
+          "code": "COMMST 192/ENGL 192",
+          "name": "Communication in the Engineering Profession"
+        },
+        {
+          "code": "GENE 123",
+          "name": "Electrical Circuits and Instrumentation"
+        },
+        {
+          "code": "MSCI 121",
+          "name": "Introduction to Computer Programming"
+        },
+        {
+          "code": "MSCI 131",
+          "name": "Work Design and Facilities Planning"
+        },
+        {
+          "code": "MATH 118",
+          "name": "Calculus 2 for Engineering"
+        },
+        {
+          "code": "PHYS 125",
+          "name": "Physics for Engineers"
+        }
+      ]
+    },
+    {
+      "term": "2A",
+      "courses": [
+        {
+          "code": "MSCI 240",
+          "name": "Algorithms and Data Structures"
+        },
+        {
+          "code": "MSCI 251",
+          "name": "Probability and Statistics 1"
+        },
+        {
+          "code": "MSCI 261",
+          "name": "Engineering Economics: Financial Management for Engineers"
+        },
+        {
+          "code": "MSCI 271",
+          "name": "Advanced Calculus and Numerical Methods"
+        }
+      ]
+    },
+    {
+      "term": "2B",
+      "courses": [
+        {
+          "code": "MSCI 245",
+          "name": "Databases and Software Design"
+        },
+        {
+          "code": "MSCI 253",
+          "name": "Probability and Statistics 2"
+        },
+        {
+          "code": "MSCI 263",
+          "name": "Managerial Economics"
+        },
+        {
+          "code": "MSCI 331",
+          "name": "Introduction to Optimization"
+        }
+      ]
+    },
+    {
+      "term": "3A",
+      "courses": [
+        {
+          "code": "MSCI 211",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "code": "MSCI 334",
+          "name": "Operations Planning and Inventory Control"
+        },
+        {
+          "code": "MSCI 342",
+          "name": "Principles of Software Engineering"
+        },
+        {
+          "code": "MSCI 391",
+          "name": "Work-term Report"
+        },
+        {
+          "code": "MSCI 431",
+          "name": "Stochastic Models and Methods"
+        }
+      ]
+    },
+    {
+      "term": "3B",
+      "courses": [
+        {
+          "code": "MSCI 302",
+          "name": "Engineering Design Methods"
+        },
+        {
+          "code": "MSCI 332",
+          "name": "Deterministic Optimization Models and Methods"
+        },
+        {
+          "code": "MSCI 333",
+          "name": "Simulation Analysis and Design"
+        },
+        {
+          "code": "MSCI 343",
+          "name": "Human-Computer Interaction"
+        },
+        {
+          "code": "MSCI 392",
+          "name": "Work-term Report"
+        }
+      ]
+    },
+    {
+      "term": "4A",
+      "courses": [
+        {
+          "code": "MSCI 401",
+          "name": "Management Engineering Design Project 1"
+        },
+        {
+          "code": "MSCI 434",
+          "name": "Supply Chain Management"
+        },
+        {
+          "code": "MSCI 436",
+          "name": "Decision Support Systems"
+        },
+        {
+          "code": "MSCI 491",
+          "name": "Work-term Report"
+        }
+      ]
+    },
+    {
+      "term": "4B",
+      "courses": [
+        {
+          "code": "MSCI 311",
+          "name": "Organizational Design and Technology"
+        },
+        {
+          "code": "MSCI 402",
+          "name": "Management Engineering Design Project 2"
+        }
+      ]
+    }
+  ]
