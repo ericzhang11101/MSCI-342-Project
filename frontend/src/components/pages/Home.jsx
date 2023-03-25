@@ -39,63 +39,10 @@ export default function Home() {
           </h3>
           <Divider></Divider>
           <p className={'mt-5 text-start w-75 h6'}>
-        Management Engineering is a program that provides undergraduate students with an interdisciplinary engineering education that covers a wide range of information from social sciences, decision making and optimizing operations. Students can use this knowledge to design, implement and manage complex real-world questions upon which organizations depend.
+            Management Engineering is a program that provides undergraduate students with an interdisciplinary engineering education that covers a wide range of information from social sciences, decision making and optimizing operations. Students can use this knowledge to design, implement and manage complex real-world questions upon which organizations depend.
           </p>
         </Grid>
-        <Grid item xs={6} className={'h-100 p-5'}>
-          <Typography variant={'h4'} color={'#3c87f5'} className={'fw-bold text-start'}>
-            COMMON CAREER PATHS
-          </Typography>
-          <div className={'mt-4'}>
-            <Grid container spacing={3}>
-              <Grid item xs={4}>
-                <StyledButton variant="contained">
-                  <StyledLink>
-                    button
-                  </StyledLink>
-                </StyledButton>
-              </Grid>
-              <Grid item xs={4}>
-                <StyledButton variant="contained">
-                  <StyledLink>
-                    button
-                  </StyledLink>
-                </StyledButton>
-              </Grid>
-              <Grid item xs={4}>
-                <StyledButton variant="contained">
-                  <StyledLink>
-                    button
-                  </StyledLink>
-                </StyledButton>
-              </Grid>
-              <Grid item xs={4}>
-                <StyledButton variant="contained">
-                  <StyledLink>
-                    button
-                  </StyledLink>
-                </StyledButton>
-              </Grid>
-              <Grid item xs={4}>
-                <StyledButton variant="contained">
-                  <StyledLink>
-                    button
-                  </StyledLink>
-                </StyledButton>
-              </Grid>
-              <Grid item xs={4}>
-                <StyledButton variant="contained">
-                  <StyledLink>
-                    button
-                  </StyledLink>
-                </StyledButton>
-              </Grid>
 
-            </Grid>
-
-
-          </div>
-        </Grid>
       </Grid>
     </HomeContainer>
   )
