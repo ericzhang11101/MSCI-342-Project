@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Grid, Typography} from "@mui/material";
 import { Button } from '@mui/material'
 import {Link} from 'react-router-dom'
+
 const HomeContainer = styled.div`
   height: 100vh;
   width: 100vw;

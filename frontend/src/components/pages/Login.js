@@ -20,9 +20,9 @@ export default function Login() {
         console.log(login)
 
         const newUser = {
-          email: login.il,
+          email: login.email,
           name: login.displayName,
-          photo: login.photoemaURL
+          photo: login.photoURL
         }
 
         setUser(newUser)

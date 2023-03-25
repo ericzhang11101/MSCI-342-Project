@@ -11,6 +11,9 @@
 # production
 /build
 
+config.js
+msci245.pem
+
 # misc
 .DS_Store
 .env.local
