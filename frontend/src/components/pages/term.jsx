@@ -1,20 +1,58 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import all_courses from '../../terms-courses.json';
 import {Card, CardContent, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 export default function Term() {
   const {term} = useParams();
   const [courses, setCourses] = useState([]);
+  const [courseToAdd, setCourseToAdd] = useState("")
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const term_data = all_courses.find(item => item.term === term);
-    if (term_data) {
-      setCourses(term_data.courses);
+    
+    const loadCourses = async () => {
+      console.log('term: ' + term)
+      const url = 'http://localhost:5000/'
+      const user = 'ericzhang11101@gmail.com'
+
+      const res = await fetch(url + 'api/getUserCourses', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user,
+          term
+        })
+      })
+      .then((res) => res.json())
+      setCourses(res)
     }
+
+    loadCourses()
+
   }, [term]);
+
+  const addCourseToTerm = async () => {
+    const url = 'http://localhost:5000/'
+    const user = 'ericzhang11101@gmail.com'
+
+    const res = await fetch(url + 'api/addUserCourse', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: user,
+        term
+      })
+    })
+    .then((res) => res.json())
+    setCourses(res)
+  }
 
 
   return (
@@ -23,14 +61,14 @@ export default function Term() {
         return (
           <Grid key={course.name} item xs={12} lg={3}>
             <Card onClick={() => {
-              navigate(`./course/${encodeURIComponent(course.code)}`)
+              navigate(`./course/${course.course_code.split(' ').join('_')}`)
             }} sx={{height: 150, cursor: 'pointer'}}>
               <CardContent>
                 <Typography textAlign={'start'} variant="h5" component="div">
-                  {course.code}
+                  {course.name}
                 </Typography>
                 <Typography  textAlign={'start'} sx={{ mb: 1.5 }} color="text.secondary">
-                  {course.name}
+                  {course.description}
                 </Typography>
               </CardContent>
             </Card>
