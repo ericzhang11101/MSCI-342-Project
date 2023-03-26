@@ -39,7 +39,7 @@ export function generateConnections(nodes){
     // add to hm 
     for (let node of nodes){
         map[node.name] = node
-        if (node.data.prereq.length){
+        if ([node.data.prereq].length){
             prereqNodes.push(node)
         }
     }
@@ -53,7 +53,7 @@ export function generateConnections(nodes){
         console.log(node.data.prereq)
         console.log(map)
 
-        for (let possibleSourceNode of node.data.prereq){
+        for (let possibleSourceNode of [node.data.prereq]){
             console.log(map[possibleSourceNode])
             if (map[possibleSourceNode] !== undefined){
                 sourceNode = map[possibleSourceNode].id
@@ -87,7 +87,7 @@ export function generateConnection(newNode, nodes, selectedCourse){
     console.log(newNode)
     console.log(selectedCourse)
     
-    for (let prereq of selectedCourse.prereq){
+    for (let prereq of [selectedCourse.prereq]){
         console.log('prereq')
         console.log(prereq)
         // find prereq
@@ -122,7 +122,7 @@ export function checkValidCourse(courseToCheck, courseList, term){
     console.log('courseToCheck')
     console.log(courseToCheck)
 
-    for (let antireq of courseToCheck.antireq){
+    for (let antireq of [courseToCheck.antireq]){
         if (courseMap[antireq]){
             return {
                 valid: false,
@@ -142,11 +142,11 @@ export function checkValidCourse(courseToCheck, courseList, term){
         }
     }
 
-    let prereqMet = courseToCheck.prereq.length === 0 
-    let prereqBefore = courseToCheck.prereq.length === 0 
-    let prereq 
+    let prereqMet = !courseToCheck.prereq
+    let prereqBefore = !courseToCheck.prereq
+    let prereq = courseToCheck.prereq
     
-    for (let course of courseToCheck.prereq){
+    for (let course of [courseToCheck.prereq]){
         if (courseMap[course]){
             prereqMet = true
             prereq = courseMap[course]
@@ -172,7 +172,7 @@ export function checkValidCourse(courseToCheck, courseList, term){
     } else {
         return {
             valid: false,
-            message: `${courseToCheck.name} is missing prereq`
+            message: `${courseToCheck.name} is missing prereq ${prereq}`
         }
     }
 
