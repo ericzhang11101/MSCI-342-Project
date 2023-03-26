@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useContext } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -9,6 +9,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import { v4 as uuidv4 } from 'uuid';
 
+import { UserContext } from '../../../App';
 import { checkValidCourse, convertCourseToNodes, generateConnections, generateConnection } from './courseUtils';
 import CourseNode from './CourseNode'
 import Sidebar from './Sidebar';
@@ -18,7 +19,7 @@ const nodeTypes = {
   selectorNode: CourseNode,
 };
 
-const courses = [
+const hardcodedCourses = [
   {
     name: "MSCI 100",
     term: '1A',
@@ -34,7 +35,7 @@ const courses = [
   }
 ]
 
-const courseList = [
+const initialCourseList = [
   {
     name: "ECE 467",
     description: "Intro to my grandma",
@@ -55,34 +56,8 @@ const courseList = [
   }
 ]
 
-// const initialNodes = [
-//   {
-//     id: '1',
-//     type: 'selectorNode',
-//     data: { 
-//       label: 'input node',
-//       term: '1A',
-//       course: "ME 250"
-    
-//     },
-//     sourcePosition: 'right',
-//     targetPosition: 'left',
-//     position: { x: 250, y: 50 },
-//   },
-//   {
-//     id: '2',
-//     data: { label: 'sksks' },
-//     sourcePosition: 'right',
-//     targetPosition: 'left',
-//     position: { x: 250, y: 5 },
-//   },
-// ];
-
-const initialNodes = convertCourseToNodes(courses)
+const initialNodes = convertCourseToNodes(hardcodedCourses)
 const initialEdges = generateConnections(initialNodes)
-
-console.log('edges')
-console.log(initialEdges)
 
 const PlanCourses = () => {
   const reactFlowWrapper = useRef(null);
@@ -91,10 +66,14 @@ const PlanCourses = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [courseList, setCourseList] = useState(initialCourseList)
+
+  const {user} = useContext(UserContext)
 
   useEffect(() => {
     // load existing nodes/ edges 
-
+    loadSavedCourses()
+    loadCourses()
   }, [])
 
   useEffect(() => {
@@ -206,18 +185,81 @@ const PlanCourses = () => {
       }
   }
 
-  const saveCourses = async () => {
+  const loadSavedCourses = async () => {
+    if (user === undefined){
+      handleErrorMessage("Please login to view your courses")
+      return
+    }
+
     const url = 'http://localhost:5000/'
-    await fetch(url + 'api/getCourses', {
+    
+    const res = await fetch(url + 'api/getCourses', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-
+        email: user.email
       })
     })
+    .then((res) => res.json())
+    .then((res) => res[0])
+    
+
+    console.log(res)
+
+    const userEdges = JSON.parse(res.edges)
+    const userNodes = JSON.parse(res.nodes)
+
+    console.log('user stuff')
+    console.log(userEdges)
+    console.log(userNodes)
+
+    setEdges(userEdges)
+    setNodes(userNodes)
+  }
+
+  const saveCourses = async () => {
+
+    if (user == undefined){
+      handleErrorMessage("Please login to save courses")
+      return 
+    }
+    
+    console.log('user: ')
+    console.log(user)
+
+    const url = 'http://localhost:5000/'
+    const res = await fetch(url + 'api/saveCourses', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nodes,
+        edges,
+        email: user.email
+      })
+    }).then((res) => res.json())
+    
+
+    console.log(res)
+  }
+
+  const loadCourses = async () => {
+    const url = 'http://localhost:5000/'
+    const res = await fetch(url + 'api/getAllCourses', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json())
+
+    console.log(res)
+    setCourseList(res)
   }
 
   return (
