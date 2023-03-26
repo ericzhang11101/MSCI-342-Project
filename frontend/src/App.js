@@ -1,6 +1,6 @@
 import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import ResponsiveAppBar from './components/ResponsiveAppBar'
 import Home from './components/pages/Home'
 import Login from './components/pages/Login'
