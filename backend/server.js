@@ -75,6 +75,71 @@ app.get('/api/getAllCourses', (req, res) => {
     })
 });
 
+app.post('/api/getUserCourses', (req, res) => {
+    console.log('post get user courses')
+    const connection = mysql.createConnection(config)
+
+    const {email, term} = req.body
+
+    const sql = `
+        SELECT * 
+        FROM courses_taken
+        INNER JOIN courses ON courses_taken.course_code = courses.name
+        WHERE courses_taken.term = '${term}' AND courses_taken.user = '${email}'
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
+
+app.post('/api/addUserCourse', (req, res) => {
+    console.log('post get user courses')
+    const connection = mysql.createConnection(config)
+
+    const {email, term, course} = req.body
+
+    const sql = `
+        INSERT INTO courses_taken (user, course_code, term)
+        VALUES ('${email}', '${course}', '${term}')
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
+
+app.post('/api/loadCourseData', (req, res) => {
+    console.log('post get user courses')
+    const connection = mysql.createConnection(config)
+
+    const {course} = req.body
+
+    const sql = `
+        SELECT * 
+        FROM courses
+        WHERE name = '${course}'
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
+
+
+
 app.listen(port, () => {
     console.log('listening to ' + port)
 })

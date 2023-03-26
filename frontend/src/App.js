@@ -9,8 +9,8 @@ import PlanCourses from'./components/pages/planCourses/PlanCourses'
 import CourseNotes from'./components/pages/CourseNotes'
 import GradeCalculator from'./components/pages/GradeCalculator'
 import CourseInfo from './components/pages/CourseInfo';
-import Terms from "./components/pages/Terms";
-import Term from "./components/pages/Term";
+import Terms from "./components/pages/terms";
+import Term from "./components/pages/term";
 import Course from "./components/pages/Course";
 
 export const UserContext = createContext(undefined)
@@ -47,7 +47,7 @@ function App() {
                 </Route>
                
                 <Route element={<Terms />} path={'/terms'}>
-                  <Route path={':term'} element={<Term />}/>
+                  <Route path={':term'} exact element={<Term />}/>
                   <Route path={':term/course/:courseId'} element={<Course />}/>
                 </Route>
             </Routes>
