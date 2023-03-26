@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect, useContext } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useContext, createContext } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -19,16 +19,21 @@ const nodeTypes = {
   selectorNode: CourseNode,
 };
 
+export const CourseContext = createContext()
+
+// remove everything below 
 const hardcodedCourses = [
   {
     name: "MSCI 100",
     term: '1A',
+    description: "Intro to my grandma",
     prereq: [],
     antireq: ['ME 100']
   },
   {
     name: "MSCI 101",
     term: '1B',
+    description: "Intro to my feet", 
     prereq: ["MSCI 100"],
     antireq: ['ME 101']
 
@@ -141,15 +146,8 @@ const PlanCourses = () => {
 
   const createClassNode = (selectedCourse, term) => {
       const type = 'selectorNode'
-    
-      console.log('selectedCourse')
-      console.log(selectedCourse)
-      // TODO:  add connections 
-      console.log('checking nodes')
-      console.log(nodes)
+
       const validity = checkValidCourse(selectedCourse, nodes, term)
-      console.log('validity: ')
-      console.log(validity)
 
       if (!validity.valid){
         // TODO: popup error
@@ -262,34 +260,59 @@ const PlanCourses = () => {
     setCourseList(res)
   }
 
+  const deleteNode = async (id) => {
+    console.log('node id: ' + id)  
+    console.log('delete')
+    // check if target node for edge, throw error 
+
+    let newNodes = []
+    
+    for (let node of nodes){
+      console.log(node.id)
+      if (node.id !== id){
+        newNodes.push(node)
+      }
+    }
+
+    console.log('new nodes: ')
+    console.log(newNodes)
+    setNodes(newNodes)
+  }
+
   return (
-    <div className="dndflow">
-      <ReactFlowProvider>
-        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            onInit={setReactFlowInstance}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            fitView
-          >
-            <Controls />
-          </ReactFlow>
-        </div>
-        <Sidebar 
-          createClassNode={createClassNode}
-          courseList={courseList}
-          errorMessage={errorMessage}
-          handleErrorMessage={handleErrorMessage}
-          saveCourses={saveCourses}
-        />
-      </ReactFlowProvider>
-    </div>
+    <CourseContext.Provider
+      value={{
+        deleteNode: (id) => deleteNode(id)
+      }}
+    >
+      <div className="dndflow">
+        <ReactFlowProvider>
+          <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              nodeTypes={nodeTypes}
+              onInit={setReactFlowInstance}
+              onDrop={onDrop}
+              onDragOver={onDragOver}
+              fitView
+            >
+              <Controls />
+            </ReactFlow>
+          </div>
+          <Sidebar 
+            createClassNode={createClassNode}
+            courseList={courseList}
+            errorMessage={errorMessage}
+            handleErrorMessage={handleErrorMessage}
+            saveCourses={saveCourses}
+          />
+        </ReactFlowProvider>
+      </div>
+    </CourseContext.Provider>
   );
 };
 
