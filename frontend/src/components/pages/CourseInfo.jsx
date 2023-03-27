@@ -9,34 +9,50 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function CourseInfo() {
-    const params = useParams()
-    const course = params.course
+    const {course} = useParams()
 
     const [courseInfo, setCourseInfo] = useState({})
 
-    useEffect(() => {
-        console.log("course: " + course)
+     useEffect(() => {
+        const updateData = async () => {
+        const courseName = course.replace('_', ' ')
+        console.log('coursename ' + courseName)  
+        const url = 'http://localhost:5000/'
 
-        // fetch data
-        
+        const newCourseData = await fetch(url + 'api/loadCourseData', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            course: courseName
+            })
+        })
+        .then((res) => res.json())
+        .then((res) => res[0])
+
         setCourseInfo({
-            courseCode: 250,
-            programCode: "ME",
-            title: "Thermodynamics 1",
+            ...newCourseData,
             importantDates: [
                 {
-                    date: new Date(),
-                    event: "my harmonica recital"
+                    event: "Midterm",
+                    date: new Date('March 2, 2023')
                 },
                 {
-                    date: new Date(),
-                    event: "colonoscopy"
+                    event: "Final Exam",
+                    date: new Date('April 20, 2023')
                 }
-            ],
-            description: "The engineering science of energy. The scope and limitations of thermodynamics.",
-            professor: "Roydon Fraser"
+            ]
         })
-    }, [course])
+        console.log(newCourseData)
+        // load grades
+
+        }
+
+        updateData()
+
+    }, [ course])
 
   return (
     <Stack
@@ -50,74 +66,110 @@ export default function CourseInfo() {
       variant="h2"
       gutterBottom={false}
     >
-      {`${courseInfo.programCode} ${courseInfo.courseCode} - ${courseInfo.title}`}
+      {`${courseInfo.name} - ${courseInfo.description}`}
     </Typography>
-    <Typography
-      align="center"
-      variant="h5"
-      gutterBottom={true}
-    >
-      {courseInfo.description}
-    </Typography>
-    <Stack
-        spacing={2}
-        width={"100%"}
-        margin={"1rem 5rem"}
-        direction={"row"}
-        alignItems={"stretch"}
-        justifyContent={"space-between"}
-    > 
-        <Card
-            sx={{
-                width: "50%"
-            }}
-        >
-            <CardContent>
-                <Typography variant="h6">
-                    Teacher: {courseInfo.professor}
-                </Typography>
-            </CardContent>
-        </Card>
-        <Card
-            sx={{
-                width: "50%"
-            }}
-        >
-            <CardContent>
-                <Typography variant="h6" gutterBottom={true}>
-                    Important Dates:
-                </Typography>
-                {
-                    courseInfo.importantDates
-                    &&
+    <Stack>
+        <Stack
+            spacing={2}
+            width={"100%"}
+            margin={"1rem 5rem"}
+            direction={"row"}
+            alignItems={"stretch"}
+            justifyContent={"space-between"}
+        > 
+            <Card
+                sx={{
+                    width: "50%"
+                }}
+            >
+                <CardContent>
+                    <Stack>
+                        <Typography variant="h6">
+                            About the Course
+                        </Typography>
+                        <Typography>
+                            {courseInfo.full_description}
+                        </Typography>
+                    </Stack>
+                </CardContent>
+            </Card>
+            <Card
+                sx={{
+                    width: "50%"
+                }}
+            >
+                <CardContent>
+                    <Typography variant="h6" gutterBottom={true}>
+                        Important Dates:
+                    </Typography>
+                    {
+                        courseInfo.importantDates
+                        &&
+                        <Stack
+                            spacing={2}
+                        >
+                            {
+                                courseInfo.importantDates.map((importantDate) => {
+                                    return (
+                                        <Card>
+                                            <CardContent>
+                                                <Typography>
+                                                    {importantDate.event}
+                                                </Typography>
+                                                <Typography
+                                                    gutterBottom={false}
+                                                >
+                                                    {importantDate.date.toLocaleDateString()}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    )
+                                })
+                            }
+                        </ Stack>
+                    }
+                    
+                </CardContent>
+            </Card>
+            <Card
+                sx={{
+                    width: "50%"
+                }}
+            >
+                <CardContent>
                     <Stack
                         spacing={2}
                     >
-                        {
-                            courseInfo.importantDates.map((importantDate) => {
-                                return (
-                                    <Card>
-                                        <CardContent>
-                                            <Typography>
-                                                {importantDate.event}
-                                            </Typography>
-                                            <Typography
-                                                gutterBottom={false}
-                                            >
-                                                {importantDate.date.toLocaleDateString()}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })
-                        }
-                    </ Stack>
-                }
-                
-            </CardContent>
-        </Card>
-    </Stack>
-
+                        <Card>
+                            <CardContent>
+                            
+                                <Typography>
+                                    Prereqs: 
+                                </Typography>
+                                <Typography
+                                    gutterBottom={false}
+                                >
+                                    {courseInfo.prereq}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardContent>
+                                <Typography>
+                                    Antireqs: 
+                                </Typography>
+                                <Typography
+                                    gutterBottom={false}
+                                >
+                                    {courseInfo.antireq}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Stack>
+    </Stack>    
   </Stack>
   )
 }

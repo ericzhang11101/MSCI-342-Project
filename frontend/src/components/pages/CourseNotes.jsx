@@ -2,56 +2,40 @@ import React, {useState} from 'react'
 import { Card, CardContent, Typography, TextField , IconButton, Button, Stack} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
-const courseInfo = {
-  courseCode: 250,
-  programCode: "ME",
-  title: "Thermodynamics 1",
-  importantDates: [],
-  description: "The engineering science of energy. The scope and limitations of thermodynamics.",
-  professor: "Roydon Fraser"
-}
-
-const courses = [
-  {
-    courseCode: 123,
-    programCode: "ME",
-    name: "course 1"
-  },
-  {
-    courseCode: 123,
-    programCode: "ME",
-    name: "course 15"
-  },
-  {
-    courseCode: 123,
-    programCode: "ME",
-    name: "course 14"
-  },
-  {
-    courseCode: 123,
-    programCode: "ME",
-    name: "course 11"
-  },
-  {
-    courseCode: 123,
-    programCode: "ME",
-    name: "course 12"
-  }
-]
-
 
 export default function CourseNotes() {
   const [searchResult, setSearchResult] = useState([])
+  const [query, setQuery] = useState("")
+
   const navigate = useNavigate()
 
-  const handleSearch = (e) => {
-    // TODO: search 
-    setSearchResult(courses)
+  const handleSearch = async (e) => {
+    const url = 'http://localhost:5000/'
+
+    const res = await fetch(url + 'api/searchCourses', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query
+      })
+    })
+    .then((res) => res.json())
+    
+    console.log(res)
+
+    setSearchResult(res)
   }
 
   const handleCourseClick = (course) => {
     console.log('visiting course ' + course)
-    navigate(`/courses/${course}`)
+    navigate(`/courses/${course.split(' ').join('_')}`)
+  }
+
+  const handleQueryChange = (e) => {
+    setQuery(e.target.value)
   }
 
   return (
@@ -64,7 +48,9 @@ export default function CourseNotes() {
       >
         Search Courses
       </Typography>
-      <Card>
+      <Card
+        style={{'min-height': '5rem'}}
+      >
         <CardContent>
           <Stack
             direction={"row"}
@@ -73,6 +59,9 @@ export default function CourseNotes() {
               <TextField 
                 label="Search Courses"
                 fullWidth
+                value={query}
+                onChange={handleQueryChange}
+                defaultValue=""
               >
               
               </TextField>
@@ -91,7 +80,13 @@ export default function CourseNotes() {
       {
         searchResult.length
         ?
-        <Card>
+        <Card
+          style={{
+            overflow: 'auto',
+            'padding-bottom': '5rem',
+            'box-sizing': 'border-box'
+          }}
+        >
           <CardContent>
             <Stack
               spacing={1}
@@ -109,7 +104,7 @@ export default function CourseNotes() {
                           justifyContent={"space-between"}
                         >
                           <Typography variant='h6'>
-                            {course.programCode} {course.courseCode} - {course.name}
+                            {course.name} - {course.description}
                           </Typography>
                           <Stack
                               direction={"row"}
@@ -118,7 +113,7 @@ export default function CourseNotes() {
                           >
                             <Button
                               variant="outlined"
-                              onClick={() => handleCourseClick(`${course.programCode}_${course.courseCode}`)}
+                              onClick={() => handleCourseClick(course.name)}
                             >
                               Info
                             </Button>
