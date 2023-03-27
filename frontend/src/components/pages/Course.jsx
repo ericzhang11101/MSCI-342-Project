@@ -13,6 +13,11 @@ export default function Course() {
   useEffect(() => {
     const updateData = async () => {
       const courseName = courseId.replace('_', ' ')
+  const courseName = courseId.replace('_', ' ')
+
+
+  useEffect(() => {
+    const updateData = async () => {
       console.log('coursename ' + courseName)  
       const url = 'http://localhost:5000/'
 
@@ -63,7 +68,7 @@ export default function Course() {
       <Paper style={{padding: '15px', marginTop: '20px'}}>
         <Typography textAlign={'start'} variant={'h4'}>Course Grade</Typography>
         <Box marginTop={'20px'}>
-          <Grade />
+          <Grade course={courseName}/>
         </Box>
       </Paper>
     </Container>

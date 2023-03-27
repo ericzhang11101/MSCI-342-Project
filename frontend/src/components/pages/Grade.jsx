@@ -12,12 +12,15 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import MenuItem from "@mui/material/MenuItem";
+import { UserContext } from "../../App";
 
 const initialData = [
   {
     id: 1,
     title: 'Quiz 1',
+    title: 'Placeholder 1',
     type: 'Quiz',
     grade: 85,
     weight: 0.5,
@@ -26,6 +29,7 @@ const initialData = [
   {
     id: 2,
     title: 'Assignemnt 2',
+    title: 'Placeholder 2',
     type: 'Quiz',
     grade: 80,
     weight: 0.5,
@@ -68,6 +72,181 @@ export default function Grade() {
     setEditGradeData(gradeRow)
   }
 
+
+export default function Grade({course}) {
+  const [addOpen, setAddOpen] = useState(false);
+  const [gradeData, setGradeData] = useState(initialData)
+  const [editOpen, setEditOpen] = useState(false)
+  const [editGradeData, setEditGradeData] = useState({
+    id: 1,
+    title: 'Quiz 1',
+    type: 'Quiz',
+    grade: 85,
+    weight: 0.5,
+    final: 42.5
+  })
+
+  const [finalGrade, setFinalGrade] = useState(0)
+
+  const [newGradeTitle, setNewGradeTitle] = useState("")
+  const [newGradeType, setNewGradeType] = useState("")
+  const [newGradeMark, setNewGradeMark] = useState(0)
+  const [newGradeWeight, setNewGradeWeight] = useState(0)
+
+  const [editGradeTitle, setEditGradeTitle] = useState("")
+  const [editGradeType, setEditGradeType] = useState("")
+  const [editGradeMark, setEditGradeMark] = useState(0)
+  const [editGradeWeight, setEditGradeWeight] = useState(0)
+  
+  const {user, setUser} = useContext(UserContext)
+
+  useEffect(() => {
+    let total = 0
+
+    for (let grade of gradeData){
+      console.log(grade)
+      total += grade.final_grade
+    }
+    setFinalGrade(total)
+  }, [gradeData])
+
+  useEffect(() => {
+    loadGradeData()
+  }, [])
+
+  const loadGradeData = async () => {
+    const url = 'http://localhost:5000/'
+    
+    const res = await fetch(url + 'api/loadGradeData', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: user.email,
+        course
+      })
+    })
+    .then((res) => res.json())
+
+    setGradeData(res)
+    console.log(res)
+  }
+  const handleAddGrade = async () => {
+    // TODO: check invalid
+
+    const newGradeData = {
+      title: newGradeTitle,
+      type: newGradeType,
+      grade: newGradeMark,
+      weight: newGradeWeight/100,
+      final: newGradeMark*newGradeWeight/100
+    }
+
+    console.log(newGradeData)
+    // api call
+
+    const url = 'http://localhost:5000/'
+    
+    const res = await fetch(url + 'api/createGradeRow', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...newGradeData,
+        user: user.email,
+        course
+
+      })
+    })
+    .then((res) => res.json())
+    closeAdd()
+    loadGradeData()
+  }
+
+  const closeAdd = () => {
+    setNewGradeMark(0)
+    setNewGradeTitle("")
+    setNewGradeType("")
+    setNewGradeWeight(0)
+
+    setAddOpen(false)
+  }
+
+  const handleEditSubmit = async () => {
+    // delete id 
+    handleDeleteGrade(editGradeData.id)
+    // add new one 
+
+     const newGradeData = {
+      title: editGradeTitle,
+      type: editGradeType,
+      grade: editGradeMark,
+      weight: editGradeWeight/100,
+      final: editGradeMark*newGradeWeight/100
+    }
+
+    console.log(newGradeData)
+    // api call
+
+    const url = 'http://localhost:5000/'
+    
+    const res = await fetch(url + 'api/createGradeRow', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...newGradeData,
+        user: user.email,
+        course
+
+      })
+    })
+    .then((res) => res.json())
+
+    setEditOpen(false)
+
+    loadGradeData()
+  }
+
+  const handleDeleteGrade = async (id) => {
+    const url = 'http://localhost:5000/'
+
+    const res = await fetch(url + 'api/deleteGradeRow', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id
+      })
+    })
+    .then((res) => res.json())
+    .then((res) => console.log(res))
+
+    loadGradeData()    
+    
+  }
+
+  function handleEdit(gradeRow){
+    setEditOpen(true)
+    setAddOpen(false)
+
+    setEditGradeData(gradeRow) // kinda redundant whatever
+
+    setEditGradeMark(gradeRow.grade)
+    setEditGradeTitle(gradeRow.title)
+    setEditGradeType(gradeRow.type)
+    setEditGradeWeight(gradeRow.weight*100)
+
+  }
+
   return (
     <Box>
       <Dialog onClose={() => setAddOpen(false)} open={addOpen} fullWidth>
@@ -82,6 +261,27 @@ export default function Grade() {
             <TextField required fullWidth select>
               <MenuItem value={'Assignment'}>Assignment</MenuItem>
               <MenuItem value={'Quiz'}>Quiz</MenuItem>
+            <TextField 
+              required fullWidth 
+              label={'Grade title'}
+              value={newGradeTitle}
+              onChange={(e) => setNewGradeTitle(e.target.value)}
+            />
+          </Box>
+          <Box>
+            <Typography>Type</Typography>
+            <TextField 
+              required fullWidth select
+              value={newGradeType}
+              onChange={(e) => setNewGradeType(e.target.value)}
+            >
+              {
+                assessmentTypes.map((assessmentType) => {
+                  return (
+                    <MenuItem value={assessmentType}>{assessmentType}</MenuItem>
+                  )
+                })
+              }
             </TextField>
           </Box>
           <Box>
@@ -95,6 +295,77 @@ export default function Grade() {
           <Box marginTop={'20px'}>
             <Button onClick={() => setAddOpen(false)} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
             <Button variant={'contained'}>Submit</Button>
+            <TextField 
+              required fullWidth 
+              label={'Grade'} 
+              type={'number'}
+              value={newGradeMark}
+              onChange={(e) => setNewGradeMark(e.target.value)}
+            />
+          </Box>
+          <Box>
+            <Typography>Weight</Typography>
+            <TextField 
+              required fullWidth 
+              label={'Weight'} 
+              type={'number'}
+              value={newGradeWeight}
+              onChange={(e) => setNewGradeWeight(e.target.value)}
+            />
+          </Box>
+          <Box marginTop={'20px'}>
+            <Button onClick={closeAdd} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
+            <Button onClick={handleAddGrade} variant={'contained'}>Submit</Button>
+          </Box>
+        </Box>
+      </Dialog>
+      <Dialog onClose={() => setEditGradeData(false)} open={editOpen} fullWidth>
+        <DialogTitle>Edit Grade</DialogTitle>
+        <Box padding={'25px'}>
+          <Box>
+            <Typography>Title</Typography>
+            <TextField required fullWidth label={'Grade title'} 
+              defaultValue={editGradeData.title}
+              value={editGradeTitle}
+              onChange={(e) => {setEditGradeTitle(e.target.value)}}
+            />
+          </Box>
+          <Box>
+            <Typography>Type</Typography>
+            <TextField required fullWidth select 
+              defaultValue={editGradeData.type}
+              value={editGradeType}
+              onChange={(e) => {setEditGradeType(e.target.value)}}
+            >
+              {
+                assessmentTypes.map((assessmentType) => {
+                  return (
+                    <MenuItem value={assessmentType}>{assessmentType}</MenuItem>
+                  )
+                })
+              }
+            </TextField>
+          </Box>
+          <Box>
+            <Typography>Grade</Typography>
+            <TextField required fullWidth 
+              label={'Grade'} type={'number'} 
+              defaultValue={editGradeData.grade}
+              value={editGradeMark}
+              onChange={(e) => {setEditGradeMark(e.target.value)}}  
+            />
+          </Box>
+          <Box>
+            <Typography>Weight</Typography>
+            <TextField required fullWidth label={'Weight'} type={'number'} 
+              defaultValue={editGradeData.weight*100}
+              value={editGradeWeight}
+              onChange={(e) => {setEditGradeWeight(e.target.value)}}    
+            />
+          </Box>
+          <Box marginTop={'20px'}>
+            <Button onClick={() => setEditOpen(false)} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
+            <Button onClick={handleEditSubmit} variant={'contained'}>Submit</Button>
           </Box>
         </Box>
       </Dialog>
@@ -107,7 +378,7 @@ export default function Grade() {
             <TableCell>Title</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Grade</TableCell>
-            <TableCell>Percentage</TableCell>
+            <TableCell>Weight</TableCell>
             <TableCell>Final Grade</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -124,6 +395,7 @@ export default function Grade() {
                   <TableCell>{gradeRow.grade}</TableCell>
                   <TableCell>{gradeRow.weight*100}%</TableCell>
                   <TableCell>{gradeRow.final} </TableCell>
+                  <TableCell>{gradeRow.final_grade} </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(gradeRow)} color={'success'} style={{marginRight: '10px'}}>Edit</Button>
                     <Button onClick={() => handleDeleteGrade(gradeRow.id)} color={'error'} style={{marginRight: '10px'}}>Delete</Button>
@@ -163,7 +435,10 @@ export default function Grade() {
           <TableRow>
             <TableCell colSpan={5}></TableCell>
             <TableCell>Total</TableCell>
-            <TableCell>89</TableCell>
+            <TableCell colSpan={3}></TableCell>
+            <TableCell>{finalGrade}</TableCell>
+            <TableCell></TableCell>
+
           </TableRow>
         </TableBody>
       </Table>
