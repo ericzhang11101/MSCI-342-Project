@@ -18,10 +18,9 @@ import {logout} from '../firebase/services'
 
 const pages = [
   {name: 'Home', link: '/'},
-  {name: 'My Courses', link: '/my-courses'},
   {name: 'Plan Courses', link: '/plan-courses'},
   {name: 'Course Info', link: '/search-courses'},
-  {name: 'Terms', link: '/terms'}
+  {name: 'My Courses', link: '/terms'}
 ]
 
 const headerName = "Management Manager"

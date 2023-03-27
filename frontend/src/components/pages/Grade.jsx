@@ -11,13 +11,14 @@ import {
   Typography
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import MenuItem from "@mui/material/MenuItem";
+import { UserContext } from "../../App";
 
 const initialData = [
   {
     id: 1,
-    title: 'Quiz 1',
+    title: 'Placeholder 1',
     type: 'Quiz',
     grade: 85,
     weight: 0.5,
@@ -25,7 +26,7 @@ const initialData = [
   },
   {
     id: 2,
-    title: 'Assignemnt 2',
+    title: 'Placeholder 2',
     type: 'Quiz',
     grade: 80,
     weight: 0.5,
@@ -60,7 +61,7 @@ export default function Grade({course}) {
   const [editGradeMark, setEditGradeMark] = useState(0)
   const [editGradeWeight, setEditGradeWeight] = useState(0)
   
-  const user = "ericzhang11101@gmail.com"
+  const {user, setUser} = useContext(UserContext)
 
   useEffect(() => {
     let total = 0
@@ -86,7 +87,7 @@ export default function Grade({course}) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        user,
+        user: user.email,
         course
       })
     })
@@ -119,7 +120,7 @@ export default function Grade({course}) {
       },
       body: JSON.stringify({
         ...newGradeData,
-        user,
+        user: user.email,
         course
 
       })
@@ -164,7 +165,7 @@ export default function Grade({course}) {
       },
       body: JSON.stringify({
         ...newGradeData,
-        user,
+        user: user.email,
         course
 
       })
