@@ -55,6 +55,11 @@ export default function Grade({course}) {
   const [newGradeMark, setNewGradeMark] = useState(0)
   const [newGradeWeight, setNewGradeWeight] = useState(0)
 
+  const [editGradeTitle, setEditGradeTitle] = useState("")
+  const [editGradeType, setEditGradeType] = useState("")
+  const [editGradeMark, setEditGradeMark] = useState(0)
+  const [editGradeWeight, setEditGradeWeight] = useState(0)
+  
   const user = "ericzhang11101@gmail.com"
 
   useEffect(() => {
@@ -134,7 +139,41 @@ export default function Grade({course}) {
   }
 
   const handleEditSubmit = async () => {
+    // delete id 
+    handleDeleteGrade(editGradeData.id)
+    // add new one 
 
+     const newGradeData = {
+      title: editGradeTitle,
+      type: editGradeType,
+      grade: editGradeMark,
+      weight: editGradeWeight/100,
+      final: editGradeMark*newGradeWeight/100
+    }
+
+    console.log(newGradeData)
+    // api call
+
+    const url = 'http://localhost:5000/'
+    
+    const res = await fetch(url + 'api/createGradeRow', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...newGradeData,
+        user,
+        course
+
+      })
+    })
+    .then((res) => res.json())
+
+    setEditOpen(false)
+
+    loadGradeData()
   }
 
   const handleDeleteGrade = async (id) => {
@@ -160,7 +199,14 @@ export default function Grade({course}) {
   function handleEdit(gradeRow){
     setEditOpen(true)
     setAddOpen(false)
-    setEditGradeData(gradeRow)
+
+    setEditGradeData(gradeRow) // kinda redundant whatever
+
+    setEditGradeMark(gradeRow.grade)
+    setEditGradeTitle(gradeRow.title)
+    setEditGradeType(gradeRow.type)
+    setEditGradeWeight(gradeRow.weight*100)
+
   }
 
   return (
@@ -224,11 +270,19 @@ export default function Grade({course}) {
         <Box padding={'25px'}>
           <Box>
             <Typography>Title</Typography>
-            <TextField required fullWidth label={'Grade title'} defaultValue={editGradeData.title}/>
+            <TextField required fullWidth label={'Grade title'} 
+              defaultValue={editGradeData.title}
+              value={editGradeTitle}
+              onChange={(e) => {setEditGradeTitle(e.target.value)}}
+            />
           </Box>
           <Box>
             <Typography>Type</Typography>
-            <TextField required fullWidth select defaultValue={editGradeData.type}>
+            <TextField required fullWidth select 
+              defaultValue={editGradeData.type}
+              value={editGradeType}
+              onChange={(e) => {setEditGradeType(e.target.value)}}
+            >
               {
                 assessmentTypes.map((assessmentType) => {
                   return (
@@ -240,15 +294,24 @@ export default function Grade({course}) {
           </Box>
           <Box>
             <Typography>Grade</Typography>
-            <TextField required fullWidth label={'Grade'} type={'number'} defaultValue={editGradeData.grade}/>
+            <TextField required fullWidth 
+              label={'Grade'} type={'number'} 
+              defaultValue={editGradeData.grade}
+              value={editGradeMark}
+              onChange={(e) => {setEditGradeMark(e.target.value)}}  
+            />
           </Box>
           <Box>
             <Typography>Weight</Typography>
-            <TextField required fullWidth label={'Weight'} type={'number'} defaultValue={editGradeData.weight*100}/>
+            <TextField required fullWidth label={'Weight'} type={'number'} 
+              defaultValue={editGradeData.weight*100}
+              value={editGradeWeight}
+              onChange={(e) => {setEditGradeWeight(e.target.value)}}    
+            />
           </Box>
           <Box marginTop={'20px'}>
             <Button onClick={() => setEditOpen(false)} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
-            <Button variant={'contained'}>Submit</Button>
+            <Button onClick={handleEditSubmit} variant={'contained'}>Submit</Button>
           </Box>
         </Box>
       </Dialog>
