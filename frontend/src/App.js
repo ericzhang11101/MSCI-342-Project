@@ -12,6 +12,21 @@ import CourseInfo from './components/pages/CourseInfo';
 import Terms from "./components/pages/Terms";
 import Term from "./components/pages/Term";
 import Course from "./components/pages/Course";
+import OptionsMainPage from './components/pages/OptionsMainPage';
+import ArtificialIntelligenceOption from './components/pages/optionsPages/ArtificialIntelligenceOption';
+import BiomechanicsOption from './components/pages/optionsPages/BiomechanicsOption';
+import ComputerEngineeringOption from './components/pages/optionsPages/ComputerEngineeringOption';
+import EntrepreneurshipOption from './components/pages/optionsPages/EntrepreneurshipOption';
+import EnvironmentalEngineeringOption from './components/pages/optionsPages/EnvironmentalEngineeringOption';
+import MechatronicsOption from './components/pages/optionsPages/MechatronicsOptions';
+import PhysiclSciencesOption from './components/pages/optionsPages/PhysicalSciencesOption';
+import SatisticsOption from './components/pages/optionsPages/StatisticsOption';
+import StatisticsOption from './components/pages/optionsPages/StatisticsOption';
+import SoftwareEngineeringOption from './components/pages/optionsPages/SoftwareEngineeringOption';
+import PhysicalSciencesOption from './components/pages/optionsPages/PhysicalSciencesOption';
+import LifeSciencesOption from './components/pages/optionsPages/LifeSciencesOption';
+import ComputingOption from './components/pages/optionsPages/ComputingOption';
+import InternationalStudiesOption from './components/pages/optionsPages/InternationStudiesOption';
 
 export const UserContext = createContext(undefined)
 
@@ -44,6 +59,58 @@ function App() {
 
                 </Route>
                 <Route element={<GradeCalculator />} path="/grade-calculator">
+                </Route>
+
+                <Route>
+                <Route element={<OptionsMainPage/>} path="/options-page"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<ArtificialIntelligenceOption/>} path="/ai-option"></Route>
+                </Route>
+                
+                <Route>
+                <Route element={<BiomechanicsOption/>} path="/biomech-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<ComputerEngineeringOption/>} path="/comp-eng-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<ComputingOption/>} path="/computing-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<EntrepreneurshipOption/>} path="/entrep-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<EnvironmentalEngineeringOption/>} path="/env-eng-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<InternationalStudiesOption/>} path="/int-studies-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<LifeSciencesOption/>} path="/computing-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<MechatronicsOption/>} path="/tron-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<PhysicalSciencesOption/>} path="/phys-sci-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<SoftwareEngineeringOption/>} path="/soft-eng-option"></Route>
+                </Route>
+
+                <Route>
+                <Route element={<StatisticsOption/>} path="/stats-option"></Route>
                 </Route>
                
                 <Route element={<Terms />} path={'/terms'}>
