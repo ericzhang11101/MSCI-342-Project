@@ -17,7 +17,6 @@ describe('empty spec', () => {
     cy.visit('http://localhost:3000/search-courses')
   
   })
-Ç
 
   it('Can click courses in TERMS', () => {
     cy.visit('http://localhost:3000/terms')
