@@ -32,8 +32,19 @@ export default function CourseInfo() {
         .then((res) => res.json())
         .then((res) => res[0])
 
-        setCourseInfo(newCourseData)
-        console.log(newCourseData)
+        setCourseInfo({
+            ...newCourseData,
+            importantDates: [
+                {
+                    event: "Midterm",
+                    date: new Date('March 2, 2023')
+                },
+                {
+                    event: "Final Exam",
+                    date: new Date('April 20, 2023')
+                }
+            ]
+        })
         console.log(newCourseData)
         // load grades
 
@@ -57,70 +68,108 @@ export default function CourseInfo() {
     >
       {`${courseInfo.name} - ${courseInfo.description}`}
     </Typography>
-    <Stack
-        spacing={2}
-        width={"100%"}
-        margin={"1rem 5rem"}
-        direction={"row"}
-        alignItems={"stretch"}
-        justifyContent={"space-between"}
-    > 
-        <Card
-            sx={{
-                width: "50%"
-            }}
-        >
-            <CardContent>
-                <Stack>
-                    <Typography variant="h6">
-                        About the Course
+    <Stack>
+        <Stack
+            spacing={2}
+            width={"100%"}
+            margin={"1rem 5rem"}
+            direction={"row"}
+            alignItems={"stretch"}
+            justifyContent={"space-between"}
+        > 
+            <Card
+                sx={{
+                    width: "50%"
+                }}
+            >
+                <CardContent>
+                    <Stack>
+                        <Typography variant="h6">
+                            About the Course
+                        </Typography>
+                        <Typography>
+                            {courseInfo.full_description}
+                        </Typography>
+                    </Stack>
+                </CardContent>
+            </Card>
+            <Card
+                sx={{
+                    width: "50%"
+                }}
+            >
+                <CardContent>
+                    <Typography variant="h6" gutterBottom={true}>
+                        Important Dates:
                     </Typography>
-                    <Typography>
-                        {courseInfo.full_description}
-                    </Typography>
-                </Stack>
-            </CardContent>
-        </Card>
-        <Card
-            sx={{
-                width: "50%"
-            }}
-        >
-            <CardContent>
-                <Typography variant="h6" gutterBottom={true}>
-                    Important Dates:
-                </Typography>
-                {
-                    courseInfo.importantDates
-                    &&
+                    {
+                        courseInfo.importantDates
+                        &&
+                        <Stack
+                            spacing={2}
+                        >
+                            {
+                                courseInfo.importantDates.map((importantDate) => {
+                                    return (
+                                        <Card>
+                                            <CardContent>
+                                                <Typography>
+                                                    {importantDate.event}
+                                                </Typography>
+                                                <Typography
+                                                    gutterBottom={false}
+                                                >
+                                                    {importantDate.date.toLocaleDateString()}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    )
+                                })
+                            }
+                        </ Stack>
+                    }
+                    
+                </CardContent>
+            </Card>
+            <Card
+                sx={{
+                    width: "50%"
+                }}
+            >
+                <CardContent>
                     <Stack
                         spacing={2}
                     >
-                        {
-                            courseInfo.importantDates.map((importantDate) => {
-                                return (
-                                    <Card>
-                                        <CardContent>
-                                            <Typography>
-                                                {importantDate.event}
-                                            </Typography>
-                                            <Typography
-                                                gutterBottom={false}
-                                            >
-                                                {importantDate.date.toLocaleDateString()}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })
-                        }
-                    </ Stack>
-                }
-                
-            </CardContent>
-        </Card>
-    </Stack>
-
+                        <Card>
+                            <CardContent>
+                            
+                                <Typography>
+                                    Prereqs: 
+                                </Typography>
+                                <Typography
+                                    gutterBottom={false}
+                                >
+                                    {courseInfo.prereq}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardContent>
+                                <Typography>
+                                    Antireqs: 
+                                </Typography>
+                                <Typography
+                                    gutterBottom={false}
+                                >
+                                    {courseInfo.antireq}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Stack>
+    </Stack>    
   </Stack>
   )
 }
