@@ -150,7 +150,7 @@ app.post('/api/searchCourses', (req, res) => {
         FROM courses
         WHERE name like '%${query}%'
     `
-
+    
     connection.query(sql, (error, result) => {
         if (error){
             return console.error(error.message)
@@ -159,6 +159,21 @@ app.post('/api/searchCourses', (req, res) => {
         res.json(result)
     })
 })
+
+app.get('/api/getAllCourses', (req, res) => {
+    console.log('post get courses')
+    const connection = mysql.createConnection(config)
+
+    const sql = `SELECT * FROM courses`
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+});
 
 app.listen(port, () => {
     console.log('listening to ' + port)
