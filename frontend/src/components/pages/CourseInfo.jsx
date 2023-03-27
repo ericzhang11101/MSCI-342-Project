@@ -9,34 +9,39 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function CourseInfo() {
-    const params = useParams()
-    const course = params.course
+    const {course} = useParams()
 
     const [courseInfo, setCourseInfo] = useState({})
 
-    useEffect(() => {
-        console.log("course: " + course)
+     useEffect(() => {
+        const updateData = async () => {
+        const courseName = course.replace('_', ' ')
+        console.log('coursename ' + courseName)  
+        const url = 'http://localhost:5000/'
 
-        // fetch data
-        
-        setCourseInfo({
-            courseCode: 250,
-            programCode: "ME",
-            title: "Thermodynamics 1",
-            importantDates: [
-                {
-                    date: new Date(),
-                    event: "my harmonica recital"
-                },
-                {
-                    date: new Date(),
-                    event: "colonoscopy"
-                }
-            ],
-            description: "The engineering science of energy. The scope and limitations of thermodynamics.",
-            professor: "Roydon Fraser"
+        const newCourseData = await fetch(url + 'api/loadCourseData', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            course: courseName
+            })
         })
-    }, [course])
+        .then((res) => res.json())
+        .then((res) => res[0])
+
+        setCourseInfo(newCourseData)
+        console.log(newCourseData)
+        console.log(newCourseData)
+        // load grades
+
+        }
+
+        updateData()
+
+    }, [ course])
 
   return (
     <Stack
@@ -50,14 +55,7 @@ export default function CourseInfo() {
       variant="h2"
       gutterBottom={false}
     >
-      {`${courseInfo.programCode} ${courseInfo.courseCode} - ${courseInfo.title}`}
-    </Typography>
-    <Typography
-      align="center"
-      variant="h5"
-      gutterBottom={true}
-    >
-      {courseInfo.description}
+      {`${courseInfo.name} - ${courseInfo.description}`}
     </Typography>
     <Stack
         spacing={2}
@@ -73,9 +71,14 @@ export default function CourseInfo() {
             }}
         >
             <CardContent>
-                <Typography variant="h6">
-                    Teacher: {courseInfo.professor}
-                </Typography>
+                <Stack>
+                    <Typography variant="h6">
+                        About the Course
+                    </Typography>
+                    <Typography>
+                        {courseInfo.full_description}
+                    </Typography>
+                </Stack>
             </CardContent>
         </Card>
         <Card
