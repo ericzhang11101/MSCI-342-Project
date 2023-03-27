@@ -18,10 +18,9 @@ import {logout} from '../firebase/services'
 
 const pages = [
   {name: 'Home', link: '/'},
-  {name: 'My Courses', link: '/my-courses'},
   {name: 'Plan Courses', link: '/plan-courses'},
-  {name: 'Course Info', link: '/course-notes'},
-  {name: 'Terms', link: '/terms'},
+  {name: 'Course Info', link: '/search-courses'},
+  {name: 'My Courses', link: '/terms'}
   {name: 'Options', link: '/options-page'}
 ]
 

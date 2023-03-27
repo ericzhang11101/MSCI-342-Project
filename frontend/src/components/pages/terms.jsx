@@ -1,5 +1,4 @@
-import {Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
-import StarIcon from '@mui/icons-material/Star';
+import {Grid, List, ListItem, ListItemButton, ListItemText} from "@mui/material";
 import Container from "@mui/material/Container";
 import {useEffect, useState} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
@@ -12,6 +11,7 @@ export default function Terms() {
 
   useEffect(() => {
     navigate('1A');
+
   }, []);
 
   return (
