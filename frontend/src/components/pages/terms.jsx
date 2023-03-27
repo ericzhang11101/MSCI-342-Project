@@ -11,6 +11,7 @@ export default function Terms() {
 
   useEffect(() => {
     navigate('1A');
+
   }, []);
 
   return (

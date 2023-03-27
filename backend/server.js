@@ -98,7 +98,7 @@ app.post('/api/getUserCourses', (req, res) => {
 })
 
 app.post('/api/addUserCourse', (req, res) => {
-    console.log('post get user courses')
+    console.log('add user course')
     const connection = mysql.createConnection(config)
 
     const {email, term, course} = req.body
