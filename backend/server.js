@@ -139,6 +139,26 @@ app.post('/api/loadCourseData', (req, res) => {
 })
 
 
+app.post('/api/searchCourses', (req, res) => {
+    console.log('post searchCourses')
+    const connection = mysql.createConnection(config)
+
+    const {query} = req.body
+    
+    const sql = `
+        SELECT * 
+        FROM courses
+        WHERE name like '%${query}%'
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
 
 app.listen(port, () => {
     console.log('listening to ' + port)

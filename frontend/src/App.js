@@ -40,7 +40,7 @@ function App() {
                 <Route element={<PlanCourses />} path="/plan-courses">
 
                 </Route>
-                <Route element={<CourseNotes />} path="/course-notes">
+                <Route element={<CourseNotes />} path="/search-courses">
 
                 </Route>
                 <Route element={<GradeCalculator />} path="/grade-calculator">
