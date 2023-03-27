@@ -49,11 +49,13 @@ export default function Grade() {
   })
 
   const [finalGrade, setFinalGrade] = useState(0)
-  
+
   const [newGradeTitle, setNewGradeTitle] = useState("")
   const [newGradeType, setNewGradeType] = useState("")
   const [newGradeMark, setNewGradeMark] = useState(0)
   const [newGradeWeight, setNewGradeWeight] = useState(0)
+
+  const user = "ericzhang11101@gmail.com"
 
   useEffect(() => {
     let total = 0
@@ -80,6 +82,23 @@ export default function Grade() {
     setNewGradeType("")
     setNewGradeWeight(0)
     // api call
+
+    const url = 'http://localhost:5000/'
+    
+    const res = await fetch(url + 'api/createGradeRow', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...newGradeData,
+        user
+      })
+    })
+    .then((res) => res.json())
+
+    console.log(res)
   }
 
   const handleEditSubmit = async () => {
@@ -226,37 +245,11 @@ export default function Grade() {
             })
           }
           <TableRow>
-            <TableCell>Assignment 1</TableCell>
-            <TableCell>Assignment</TableCell>
-            <TableCell>87</TableCell>
-            <TableCell>50%</TableCell>
-            <TableCell>
-              {87 * 0.5}
-            </TableCell>
-            <TableCell>
-              <Button onClick={() => setEditOpen(true)} color={'success'} style={{marginRight: '10px'}}>Edit</Button>
-              <Button color={'error'} style={{marginRight: '10px'}}>Delete</Button>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell>Quiz 2</TableCell>
-            <TableCell>Quiz</TableCell>
-            <TableCell>50</TableCell>
-            <TableCell>30%</TableCell>
-            <TableCell>
-              {50 * 0.3}
-            </TableCell>
-            <TableCell>
-              <Button onClick={() => setEditOpen(true)} color={'success'} style={{marginRight: '10px'}}>Edit</Button>
-              <Button color={'error'} style={{marginRight: '10px'}}>Delete</Button>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan={3}></TableCell>
             <TableCell>Total</TableCell>
+            <TableCell colSpan={3}></TableCell>
             <TableCell>{finalGrade}</TableCell>
+            <TableCell></TableCell>
+
           </TableRow>
         </TableBody>
       </Table>

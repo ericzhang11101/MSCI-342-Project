@@ -160,6 +160,69 @@ app.post('/api/searchCourses', (req, res) => {
     })
 })
 
+app.post('/api/deleteGradeRow', (req, res) => {
+    console.log('post deleteGradeRow')
+    const connection = mysql.createConnection(config)
+
+    const {query} = req.body
+    
+    const sql = `
+        SELECT * 
+        FROM courses
+        WHERE name like '%${query}%'
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
+
+app.post('/api/loadGradeData', (req, res) => {
+    console.log('post loadGradeData')
+    const connection = mysql.createConnection(config)
+
+    const {query} = req.body
+    
+    const sql = `
+        SELECT * 
+        FROM courses
+        WHERE name like '%${query}%'
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
+
+app.post('/api/createGradeRow', (req, res) => {
+    console.log('post createGradeRow')
+    const connection = mysql.createConnection(config)
+
+    const {
+        title, type, grade, weight, final, user
+    } = req.body
+    
+    const sql = `
+        INSERT INTO grades (user, grade, title, type, weight, final_grade)
+        VALUES ('${user}', '${grade}', '${title}', '${type}', '${weight}', '${final}')
+    `
+
+    connection.query(sql, (error, result) => {
+        if (error){
+            return console.error(error.message)
+        }
+        console.log(result)
+        res.json(result)
+    })
+})
 app.listen(port, () => {
     console.log('listening to ' + port)
 })
