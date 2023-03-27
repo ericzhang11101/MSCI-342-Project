@@ -164,12 +164,11 @@ app.post('/api/deleteGradeRow', (req, res) => {
     console.log('post deleteGradeRow')
     const connection = mysql.createConnection(config)
 
-    const {query} = req.body
+    const {id}= req.body
     
     const sql = `
-        SELECT * 
-        FROM courses
-        WHERE name like '%${query}%'
+        DELETE FROM grades
+        WHERE id = ${id}
     `
 
     connection.query(sql, (error, result) => {
@@ -185,12 +184,15 @@ app.post('/api/loadGradeData', (req, res) => {
     console.log('post loadGradeData')
     const connection = mysql.createConnection(config)
 
-    const {query} = req.body
+    const {user, course} = req.body
     
     const sql = `
         SELECT * 
-        FROM courses
-        WHERE name like '%${query}%'
+        FROM grades
+        WHERE 
+            user = '${user}' 
+            AND
+            course = '${course}'
     `
 
     connection.query(sql, (error, result) => {
@@ -207,12 +209,12 @@ app.post('/api/createGradeRow', (req, res) => {
     const connection = mysql.createConnection(config)
 
     const {
-        title, type, grade, weight, final, user
+        title, type, grade, weight, final, user, course
     } = req.body
     
     const sql = `
-        INSERT INTO grades (user, grade, title, type, weight, final_grade)
-        VALUES ('${user}', '${grade}', '${title}', '${type}', '${weight}', '${final}')
+        INSERT INTO grades (user, grade, title, type, weight, final_grade, course)
+        VALUES ('${user}', '${grade}', '${title}', '${type}', '${weight}', '${final}', '${course}')
     `
 
     connection.query(sql, (error, result) => {
@@ -223,6 +225,7 @@ app.post('/api/createGradeRow', (req, res) => {
         res.json(result)
     })
 })
+
 app.listen(port, () => {
     console.log('listening to ' + port)
 })

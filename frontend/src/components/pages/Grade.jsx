@@ -35,7 +35,7 @@ const initialData = [
 
 const assessmentTypes = ["Quiz", "Exam", "Assignment", "Lab"]
 
-export default function Grade() {
+export default function Grade({course}) {
   const [addOpen, setAddOpen] = useState(false);
   const [gradeData, setGradeData] = useState(initialData)
   const [editOpen, setEditOpen] = useState(false)
@@ -59,12 +59,37 @@ export default function Grade() {
 
   useEffect(() => {
     let total = 0
+
     for (let grade of gradeData){
-      total += grade.final
+      console.log(grade)
+      total += grade.final_grade
     }
     setFinalGrade(total)
   }, [gradeData])
 
+  useEffect(() => {
+    loadGradeData()
+  }, [])
+
+  const loadGradeData = async () => {
+    const url = 'http://localhost:5000/'
+    
+    const res = await fetch(url + 'api/loadGradeData', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user,
+        course
+      })
+    })
+    .then((res) => res.json())
+
+    setGradeData(res)
+    console.log(res)
+  }
   const handleAddGrade = async () => {
     // TODO: check invalid
 
@@ -77,10 +102,6 @@ export default function Grade() {
     }
 
     console.log(newGradeData)
-    setNewGradeMark(0)
-    setNewGradeTitle("")
-    setNewGradeType("")
-    setNewGradeWeight(0)
     // api call
 
     const url = 'http://localhost:5000/'
@@ -93,12 +114,23 @@ export default function Grade() {
       },
       body: JSON.stringify({
         ...newGradeData,
-        user
+        user,
+        course
+
       })
     })
     .then((res) => res.json())
+    closeAdd()
+    loadGradeData()
+  }
 
-    console.log(res)
+  const closeAdd = () => {
+    setNewGradeMark(0)
+    setNewGradeTitle("")
+    setNewGradeType("")
+    setNewGradeWeight(0)
+
+    setAddOpen(false)
   }
 
   const handleEditSubmit = async () => {
@@ -106,13 +138,23 @@ export default function Grade() {
   }
 
   const handleDeleteGrade = async (id) => {
-    let newRows = []
+    const url = 'http://localhost:5000/'
 
-    for (let row of gradeData){
-      if (row.id !== id) newRows.push(row)
-    }
+    const res = await fetch(url + 'api/deleteGradeRow', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id
+      })
+    })
+    .then((res) => res.json())
+    .then((res) => console.log(res))
 
-    setGradeData(newRows)
+    loadGradeData()    
+    
   }
 
   function handleEdit(gradeRow){
@@ -172,7 +214,7 @@ export default function Grade() {
             />
           </Box>
           <Box marginTop={'20px'}>
-            <Button onClick={() => setAddOpen(false)} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
+            <Button onClick={closeAdd} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
             <Button onClick={handleAddGrade} variant={'contained'}>Submit</Button>
           </Box>
         </Box>
@@ -235,7 +277,7 @@ export default function Grade() {
                   <TableCell>{gradeRow.type}</TableCell>
                   <TableCell>{gradeRow.grade}</TableCell>
                   <TableCell>{gradeRow.weight*100}%</TableCell>
-                  <TableCell>{gradeRow.final} </TableCell>
+                  <TableCell>{gradeRow.final_grade} </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(gradeRow)} color={'success'} style={{marginRight: '10px'}}>Edit</Button>
                     <Button onClick={() => handleDeleteGrade(gradeRow.id)} color={'error'} style={{marginRight: '10px'}}>Delete</Button>
