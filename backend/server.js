@@ -151,6 +151,7 @@ app.post('/api/searchCourses', (req, res) => {
         WHERE name like '%${query}%'
     `
 
+
     connection.query(sql, (error, result) => {
         if (error){
             return console.error(error.message)
@@ -180,6 +181,13 @@ app.post('/api/deleteGradeRow', (req, res) => {
     })
 })
 
+
+app.get('/api/getAllCourses', (req, res) => {
+    console.log('post get courses')
+    const connection = mysql.createConnection(config)
+
+    const sql = `SELECT * FROM courses`
+=======
 app.post('/api/loadGradeData', (req, res) => {
     console.log('post loadGradeData')
     const connection = mysql.createConnection(config)
@@ -195,6 +203,7 @@ app.post('/api/loadGradeData', (req, res) => {
             course = '${course}'
     `
 
+
     connection.query(sql, (error, result) => {
         if (error){
             return console.error(error.message)
@@ -202,6 +211,9 @@ app.post('/api/loadGradeData', (req, res) => {
         console.log(result)
         res.json(result)
     })
+
+});
+
 })
 
 app.post('/api/createGradeRow', (req, res) => {
@@ -225,6 +237,7 @@ app.post('/api/createGradeRow', (req, res) => {
         res.json(result)
     })
 })
+
 
 app.listen(port, () => {
     console.log('listening to ' + port)

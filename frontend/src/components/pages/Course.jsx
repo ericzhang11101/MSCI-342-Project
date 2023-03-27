@@ -8,6 +8,11 @@ import { useEffect, useState } from "react";
 export default function Course() {
   const {term, courseId} = useParams();
   const [courseData, setCourseData] = useState({})
+  const [grades, setGrades] = useState([])
+
+  useEffect(() => {
+    const updateData = async () => {
+      const courseName = courseId.replace('_', ' ')
   const courseName = courseId.replace('_', ' ')
 
 
