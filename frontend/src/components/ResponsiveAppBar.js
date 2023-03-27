@@ -22,6 +22,7 @@ const pages = [
   {name: 'Course Info', link: '/search-courses'},
   {name: 'Terms', link: '/terms'},
   {name: 'My Courses', link: '/terms'}
+  {name: 'Options', link: '/options-page'}
 ]
 
 const headerName = "Management Manager"
