@@ -39,9 +39,22 @@ export default function Grade() {
   const [addOpen, setAddOpen] = useState(false);
   const [gradeData, setGradeData] = useState(initialData)
   const [editOpen, setEditOpen] = useState(false)
-  const [editGradeData, setEditGradeData] = useState()
+  const [editGradeData, setEditGradeData] = useState({
+    id: 1,
+    title: 'Quiz 1',
+    type: 'Quiz',
+    grade: 85,
+    weight: 0.5,
+    final: 42.5
+  })
+
   const [finalGrade, setFinalGrade] = useState(0)
   
+  const [newGradeTitle, setNewGradeTitle] = useState("")
+  const [newGradeType, setNewGradeType] = useState("")
+  const [newGradeMark, setNewGradeMark] = useState(0)
+  const [newGradeWeight, setNewGradeWeight] = useState(0)
+
   useEffect(() => {
     let total = 0
     for (let grade of gradeData){
@@ -51,6 +64,25 @@ export default function Grade() {
   }, [gradeData])
 
   const handleAddGrade = async () => {
+    // TODO: check invalid
+
+    const newGradeData = {
+      title: newGradeTitle,
+      type: newGradeType,
+      grade: newGradeMark,
+      weight: newGradeWeight/100,
+      final: newGradeMark*newGradeWeight/100
+    }
+
+    console.log(newGradeData)
+    setNewGradeMark(0)
+    setNewGradeTitle("")
+    setNewGradeType("")
+    setNewGradeWeight(0)
+    // api call
+  }
+
+  const handleEditSubmit = async () => {
 
   }
 
@@ -60,6 +92,8 @@ export default function Grade() {
     for (let row of gradeData){
       if (row.id !== id) newRows.push(row)
     }
+
+    setGradeData(newRows)
   }
 
   function handleEdit(gradeRow){
@@ -75,25 +109,84 @@ export default function Grade() {
         <Box padding={'25px'}>
           <Box>
             <Typography>Title</Typography>
-            <TextField required fullWidth label={'Grade title'}/>
+            <TextField 
+              required fullWidth 
+              label={'Grade title'}
+              value={newGradeTitle}
+              onChange={(e) => setNewGradeTitle(e.target.value)}
+            />
           </Box>
           <Box>
             <Typography>Type</Typography>
-            <TextField required fullWidth select>
-              <MenuItem value={'Assignment'}>Assignment</MenuItem>
-              <MenuItem value={'Quiz'}>Quiz</MenuItem>
+            <TextField 
+              required fullWidth select
+              value={newGradeType}
+              onChange={(e) => setNewGradeType(e.target.value)}
+            >
+              {
+                assessmentTypes.map((assessmentType) => {
+                  return (
+                    <MenuItem value={assessmentType}>{assessmentType}</MenuItem>
+                  )
+                })
+              }
             </TextField>
           </Box>
           <Box>
             <Typography>Grade</Typography>
-            <TextField required fullWidth label={'Grade'} type={'number'}/>
+            <TextField 
+              required fullWidth 
+              label={'Grade'} 
+              type={'number'}
+              value={newGradeMark}
+              onChange={(e) => setNewGradeMark(e.target.value)}
+            />
           </Box>
           <Box>
-            <Typography>Percentage</Typography>
-            <TextField required fullWidth label={'Percentage'} type={'number'}/>
+            <Typography>Weight</Typography>
+            <TextField 
+              required fullWidth 
+              label={'Weight'} 
+              type={'number'}
+              value={newGradeWeight}
+              onChange={(e) => setNewGradeWeight(e.target.value)}
+            />
           </Box>
           <Box marginTop={'20px'}>
             <Button onClick={() => setAddOpen(false)} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
+            <Button onClick={handleAddGrade} variant={'contained'}>Submit</Button>
+          </Box>
+        </Box>
+      </Dialog>
+      <Dialog onClose={() => setEditGradeData(false)} open={editOpen} fullWidth>
+        <DialogTitle>Edit Grade</DialogTitle>
+        <Box padding={'25px'}>
+          <Box>
+            <Typography>Title</Typography>
+            <TextField required fullWidth label={'Grade title'} defaultValue={editGradeData.title}/>
+          </Box>
+          <Box>
+            <Typography>Type</Typography>
+            <TextField required fullWidth select defaultValue={editGradeData.type}>
+              {
+                assessmentTypes.map((assessmentType) => {
+                  return (
+                    <MenuItem value={assessmentType}>{assessmentType}</MenuItem>
+                  )
+                })
+              }
+            </TextField>
+          </Box>
+          <Box>
+            <Typography>Grade</Typography>
+            <TextField required fullWidth label={'Grade'} type={'number'} defaultValue={editGradeData.grade}/>
+          </Box>
+          <Box>
+            <Typography>Weight</Typography>
+            <TextField required fullWidth label={'Weight'} type={'number'} defaultValue={editGradeData.weight*100}/>
+          </Box>
+          <Box marginTop={'20px'}>
+            <Button onClick={() => setEditOpen(false)} style={{marginRight: '10px'}} variant={'contained'} color={'inherit'}>Cancel</Button>
             <Button variant={'contained'}>Submit</Button>
           </Box>
         </Box>
@@ -107,7 +200,7 @@ export default function Grade() {
             <TableCell>Title</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Grade</TableCell>
-            <TableCell>Percentage</TableCell>
+            <TableCell>Weight</TableCell>
             <TableCell>Final Grade</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -161,9 +254,9 @@ export default function Grade() {
           </TableRow>
 
           <TableRow>
-            <TableCell colSpan={5}></TableCell>
+            <TableCell colSpan={3}></TableCell>
             <TableCell>Total</TableCell>
-            <TableCell>89</TableCell>
+            <TableCell>{finalGrade}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
