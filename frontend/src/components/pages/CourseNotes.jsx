@@ -10,9 +10,6 @@ export default function CourseNotes() {
   const navigate = useNavigate()
 
   const handleSearch = async (e) => {
-    // TODO: search 
-    console.log('searching ' + query)
-
     const url = 'http://localhost:5000/'
 
     const res = await fetch(url + 'api/searchCourses', {
