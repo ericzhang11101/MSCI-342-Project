@@ -20,7 +20,7 @@ const pages = [
   {name: 'Home', link: '/'},
   {name: 'Plan Courses', link: '/plan-courses'},
   {name: 'Course Info', link: '/search-courses'},
-  {name: 'Terms', link: '/terms'}
+  {name: 'Terms', link: '/terms'},
   {name: 'My Courses', link: '/terms'}
 ]
 
